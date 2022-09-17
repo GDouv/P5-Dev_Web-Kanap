@@ -21,3 +21,5 @@ fetch(url + "/" + productId)
     productImg.setAttribute("src", currentProduct.imageUrl)
 })
 .catch(err => console.log("Erreur", err));
+
+// test commit
