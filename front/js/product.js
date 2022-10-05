@@ -96,6 +96,8 @@ document.getElementById('addToCart').addEventListener("click", function() {
     }
 
     console.log("Cart (JSON) : " + JSON.stringify(cart))
+
+    localStorage.setItem("Cart", JSON.stringify(cart))
 })
 
 
