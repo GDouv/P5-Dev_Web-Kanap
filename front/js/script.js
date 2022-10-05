@@ -54,5 +54,3 @@ fetch(url)
 })
 .catch(err => console.log("Erreur", err));
 
-
-
