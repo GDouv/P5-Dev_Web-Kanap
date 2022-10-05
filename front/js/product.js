@@ -86,18 +86,8 @@ let productIsInCart = function() {
     return booleanResult
 }
 
-let cartIsEmpty = false
-
 document.getElementById('addToCart').addEventListener("click", function() {
-    if (cart.length === 0) {
-    cartIsEmpty = true
-    }
-
-    if (cartIsEmpty) {
-        cart.push(currentProductInfos())
-        cartIsEmpty = false
-    }
-    else if (productIsInCart()) {
+    if (productIsInCart()) {
         console.log("Index du produit : " + productFoundIndex())
         cart[productFoundIndex()].quantity = parseInt(cart[productFoundIndex()].quantity) + parseInt(productQuantity.value)
     }
