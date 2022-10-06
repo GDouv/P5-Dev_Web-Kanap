@@ -57,6 +57,10 @@ fetch(url + "/" + productId)
 
 let cart = []
 
+if (localStorage.getItem("Cart") != null) {
+    cart = JSON.parse(localStorage.getItem("Cart"))
+}
+
 // Sauvegarde les infos du produit sélectionné dans un objet JSON
 let currentProductInfos = function() {
     let jsonProduct = {
