@@ -26,6 +26,7 @@ fetch(url + "/" + productId)
     productDescription.innerText = currentProduct.description
 
     let chooseColorText = document.querySelector("#colors option").innerText
+  
 
     for (let i = 0; i <= 2; i++) {
 
@@ -52,6 +53,7 @@ fetch(url + "/" + productId)
         newOption.innerText = currentProduct.colors[3]
         newOption.setAttribute("value", currentProduct.colors[3].toLowerCase())
     }
+    // Façon d'ajouter les couleurs un peu bizarre, à améliorer et passer les couleurs en Français
 })
 .catch(err => console.log("Erreur", err));
 
@@ -91,157 +93,33 @@ let productIsInCart = function() {
 }
 
 document.getElementById('addToCart').addEventListener("click", function() {
-    if (productIsInCart()) {
+
+    if (productColors.value.length < 1) {
+        alert("Veuillez sélectionner une couleur")
+    }
+    else if (productQuantity.value < 1) {
+        alert("Veuillez saisir un nombre d'article(s) valide")
+    }
+    else if (productIsInCart()) {
         console.log("Index du produit : " + productFoundIndex())
         cart[productFoundIndex()].quantity = parseInt(cart[productFoundIndex()].quantity) + parseInt(productQuantity.value)
+
+        if (cart[productFoundIndex()].quantity > 100) {
+            cart[productFoundIndex()].quantity = parseInt(cart[productFoundIndex()].quantity) - parseInt(productQuantity.value)
+            alert("Le panier est limité à 100 produits identiques")
+        }
     }
     else {
-        cart.push(currentProductInfos()) 
+        if (productQuantity.value <= 100) {
+            cart.push(currentProductInfos()) 
+        }
+        else {
+            alert("Le panier est limité à 100 produits identiques")
+        }
+        
     }
 
     console.log("Cart (JSON) : " + JSON.stringify(cart))
 
     localStorage.setItem("Cart", JSON.stringify(cart))
 })
-
-
-
-
-/* CODE COMMENTE
-
-// Sauvegarde les infos du produit sélectionné dans un objet JSON
-let saveCurrentProductInfos = function() {
-    let jsonProduct = {
-        id : productId,
-        quantity : productQuantity.value,
-        color : productColors.value
-    }
-
-    let productObj = JSON.stringify(jsonProduct)
-  
-    return productObj
-}
-
-console.log("saveCurrentProductInfos : " + saveCurrentProductInfos())
-
-
-let selectedProductColor = productColors.addEventListener("change", function() {
-    saveCurrentProductInfos()
-
-    console.log("saveCurrentProductInfo : " + saveCurrentProductInfos())
-    console.log("COLOR CHANGED")
-})
-
-let selectedQuantity = productQuantity.addEventListener("change", function() {
-    saveCurrentProductInfos()
-    console.log("saveCurrentProductInfo : " + saveCurrentProductInfos())
-    console.log("++")
-})
-
-// Permet d'ajouter un produit au panier mais l'ancien est écrasé à chaque ajout
-// Utiliser un array pour mettre les données dedans puis faire un objet avec l'array ?
-document.getElementById('addToCart').addEventListener("click", function() {
-    // Ajouter les éléments dans l'array cart
-
-    let parseObj = JSON.parse(saveCurrentProductInfos())
-    let currentColor = parseObj.color
-    console.log("currentColor : " + currentColor)
-
-    if (cart.length == 0) {
-        cart.push(saveCurrentProductInfos())
-    }
-
-*/
-
-/* CODE COMMENTE
-
-    else if (cart.length >= 1) {
-        let currentProductIndex = cart.indexOf(saveCurrentProductInfos())
-        console.log("currentProductIndex : " + currentProductIndex)
-
-        
-        // Il faut mettre le résultat de saveCurrentProductInfos dans un array
-        // Itérer sur cet array pour tester si l'index est présent
-
-        // OU
-
-        // chercher si l'Id est présent dans l'array, puis chercher si la couleur
-        // est présente dans le même objet et ensuite mettre à jour la quantité
-        
-        
-
-        
-        // let replaceCart = cart.toString().replaceAll(/(},{)+/g, "} {")
-        // console.log("replaceCart : " + replaceCart)
-        
-       
-
-        if (currentProductIndex < 0) {
-            function findProductById(product) {
-                return product.id === productId
-            }
-            console.log("cart : " + cart)
-            console.log(cart.find(findProductById))
-            cart.push(saveCurrentProductInfos())
-        }
-
-        else {
-            console.log("cart juste avant parseCart : " + cart)
-            let parseCart = JSON.parse(cart[currentProductIndex])
-            console.log("parseCart : " + parseCart)
-
-            if (parseCart.color == currentColor) {
-            console.log("cartToString : " + cart.toString())
-
-            parseCart.quantity = parseInt(parseCart.quantity) + parseInt(parseObj.quantity)
-        
-            cart.splice(currentProductIndex, 1)
-            cart.push(JSON.stringify(parseCart))
-            }
-
-        else {
-            cart.push(saveCurrentProductInfos())
-        }
-        }
-        
-        
-
-    }
-
-    console.log("Cart : " + cart)
-    localStorage.setItem("item" + [localStorage.length], cart)
-    console.log("===========================================")
-    
-})
-
-*/
-
-/*
-        Le panier fonctionne presque sauf : après avoir ajouté un produit d'une couleur,
-        puis d'une autre couleur et qu'on rajouter ensuite un prduit de la première couleur,
-        le nouveau produit est rajouté à la fin au lieu d'update la quantité
-        exemple screenshot bureau
-        Aussi : On ne peut ajouter que 2 fois de suite un objet de la même couleur, après, un nouvel objet est créé dans l'array
-        (ne fonctionne qu'avec 2 fois un élément avec la même quantité)
-*/
-
-
-/* Si cart contient déjà l'élément de la même couleur, augmenter la quantité
-cart se réinitiale à chaque changement de page, donc pas besoin de l'Id
-récupérer la couleur de l'élément courrant
-si élément de la même couleur non présent dans l'array : ajouter le nouvel élément
-si même couleur, ne pas dupliquer l'élément
-récupérer la quantité initiale
-récupérer la nouvelle quantité
-ajouter les 2 valeurs
-mettre la nouvelle valeur dans "quantity"
-*/
-
-/* Si localStorage contient déjà un item avec le même Id, ne pas créer de nouvel item
-et augmenter la quantité
-récupérer l'Id de l'élément courant
-chercher si cet Id existe dans localStorage
-récupérer la quantité
-additionner la quantité à ajouter et la quantité initiale
-remettre les données dans localStorage
-*/
