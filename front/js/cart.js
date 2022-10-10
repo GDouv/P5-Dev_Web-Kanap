@@ -32,8 +32,6 @@ fetch(apiUrl)
     
     cloneArticle()
 
-    
-    
     for (let i in cart) {
         const eachArticle = cartItems.children[i]
         const eachArticleId = cart[i].id
@@ -69,6 +67,8 @@ fetch(apiUrl)
     document.querySelector("#totalQuantity").innerText = cart.length
 
     calculateTotalPrice()
+
+    validateFormInfos()
 })
 .catch(err => console.log("Erreur", err))
 
@@ -147,8 +147,6 @@ let totalQuantity = document.getElementById("totalQuantity")
 
 function calculateTotalPrice() {
     const articlesPrices = document.querySelectorAll(".cart__item__price")
-    console.log("articlesPrices querySelector All :")
-    console.log(articlesPrices)
 
     let totalPriceAddition = 0
     let productQuantityAddition = 0
@@ -159,9 +157,65 @@ function calculateTotalPrice() {
         totalPriceAddition += productQuantity * parseInt(articlesPrices[i].dataset.price)
         productQuantityAddition += parseInt(productQuantity)
     }
-    
-    console.log("Total price : " + totalPriceAddition)
         
     totalPrice.innerText = totalPriceAddition + ",00"
     totalQuantity.innerText = productQuantityAddition
+}
+
+function validateFormInfos() {
+    
+    let firstNameInput = document.getElementById("firstName")
+
+    let regexName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]+$/u
+
+    const firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
+    firstNameErrorMsg.innerText = "Veuillez saisir votre prénom"
+
+    firstNameInput.addEventListener("change", function() {
+        if (firstNameInput.value.length > 1) {
+            let testFirstName = regexName.test(firstNameInput.value)
+
+            if (testFirstName === true) {
+                firstNameErrorMsg.style.display = "none"
+            }
+            else {
+                firstNameErrorMsg.style.display = "inline"
+            }
+
+            console.log("test first name :")
+            console.log(testFirstName)
+            return testFirstName
+        }
+        else {
+            alert ("Veuillez saisir au moins 2 caractères")
+        }
+    })
+
+    // Un nom peut n'avoir qu'un seul caractère, exemple : Cédric O, ancien Secrétaire d'état chargé du numérique
+
+    let lastNameInput = document.getElementById("lastName")
+
+    const lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
+    lastNameErrorMsg.innerText = "Veuillez saisir votre nom"
+
+    lastNameInput.addEventListener("change", function() {
+        let testLastName = regexName.test(lastNameInput.value)
+
+        if (testLastName === true) {
+            lastNameErrorMsg.style.display = "none"
+        }
+        else {
+            lastNameErrorMsg.style.display = "inline"
+        }
+
+        console.log("test last name :")
+        console.log(testLastName)
+        return testLastName
+    })
+
+
+    // Editer le message d'erreur pour le prénom
+    // Vérifier le contenu de l'input grâce à une regex
+    // Si le contenu est validé, disable le message d'erreur, enable si non valide, disabled de base
+    // Pareil pour nom, adresse, ville, email
 }
