@@ -237,7 +237,7 @@ function validateFormInfos() {
 
     let cityInput = document.getElementById("city")
 
-    let regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]$/u
+    let regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{1,}$/u
 
     const cityErrorMsg = document.getElementById("cityErrorMsg")
     cityErrorMsg.innerText = "Veuillez saisir votre ville"
