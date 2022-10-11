@@ -166,43 +166,43 @@ function validateFormInfos() {
     
     let firstNameInput = document.getElementById("firstName")
 
-    let regexName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]+$/u
+    let regexFirstName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u
 
     const firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
     firstNameErrorMsg.innerText = "Veuillez saisir votre prénom"
 
     firstNameInput.addEventListener("change", function() {
-        if (firstNameInput.value.length > 1) {
-            let testFirstName = regexName.test(firstNameInput.value)
+        let testFirstName = regexFirstName.test(firstNameInput.value)
 
-            if (testFirstName === true) {
-                firstNameErrorMsg.style.display = "none"
-            }
-            else {
-                firstNameErrorMsg.style.display = "inline"
-            }
-
-            console.log("test first name :")
-            console.log(testFirstName)
-            return testFirstName
+        if (testFirstName) {
+            firstNameErrorMsg.style.display = "none"
+            firstNameInput.value = firstNameInput.value.charAt(0).toUpperCase() + firstNameInput.value.slice(1)
         }
         else {
-            alert ("Veuillez saisir au moins 2 caractères")
+            firstNameErrorMsg.style.display = "inline"
         }
+
+        console.log("test first name :")
+        console.log(testFirstName)
+        return testFirstName
     })
 
     // Un nom peut n'avoir qu'un seul caractère, exemple : Cédric O, ancien Secrétaire d'état chargé du numérique
+    // Le record du nom le plus long est de 47 caractères : Pourroy de L'Auberivière de Quinsonas-Oudinot de Reggio
 
     let lastNameInput = document.getElementById("lastName")
+
+    let regexLastName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u
 
     const lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
     lastNameErrorMsg.innerText = "Veuillez saisir votre nom"
 
     lastNameInput.addEventListener("change", function() {
-        let testLastName = regexName.test(lastNameInput.value)
+        let testLastName = regexLastName.test(lastNameInput.value)
 
-        if (testLastName === true) {
+        if (testLastName) {
             lastNameErrorMsg.style.display = "none"
+            lastNameInput.value = lastNameInput.value.charAt(0).toUpperCase() + lastNameInput.value.slice(1)
         }
         else {
             lastNameErrorMsg.style.display = "inline"
@@ -213,9 +213,71 @@ function validateFormInfos() {
         return testLastName
     })
 
+    let addressInput = document.getElementById("address")
 
-    // Editer le message d'erreur pour le prénom
-    // Vérifier le contenu de l'input grâce à une regex
-    // Si le contenu est validé, disable le message d'erreur, enable si non valide, disabled de base
-    // Pareil pour nom, adresse, ville, email
+    let regexAddress = /^[a-zA-Z0-9àâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{3,}$/u
+
+    const addressErrorMsg = document.getElementById("addressErrorMsg")
+    addressErrorMsg.innerText = "Veuillez saisir une adresse valide"
+
+    addressInput.addEventListener("change", function() {
+        let testAddress = regexAddress.test(addressInput.value)
+
+        if (testAddress) {
+            addressErrorMsg.style.display = "none"
+        }
+        else {
+            addressErrorMsg.style.display = "inline"
+        }
+
+        console.log("test address :")
+        console.log(testAddress)
+        return testAddress
+    })
+
+    let cityInput = document.getElementById("city")
+
+    let regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]$/u
+
+    const cityErrorMsg = document.getElementById("cityErrorMsg")
+    cityErrorMsg.innerText = "Veuillez saisir votre ville"
+
+    cityInput.addEventListener("change", function() {
+        let testCity = regexCity.test(cityInput.value)
+
+        if (testCity) {
+            cityErrorMsg.style.display = "none"
+            cityInput.value = cityInput.value.charAt(0).toUpperCase() + cityInput.value.slice(1)
+        }
+        else {
+            cityErrorMsg.style.display = "inline"
+        }
+
+        console.log("test city :")
+        console.log(testCity)
+        return testCity
+    })
+
+    let emailInput = document.getElementById("email")
+
+    let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+
+    const emailErrorMsg = document.getElementById("emailErrorMsg")
+    emailErrorMsg.innerText = "Veuillez saisir une adresse email valide"
+
+    emailInput.addEventListener("change", function() {
+        let testEmail = regexEmail.test(emailInput.value)
+
+        if (testEmail) {
+            emailErrorMsg.style.display = "none"
+            emailInput.value = emailInput.value.toLowerCase()
+        }
+        else {
+            emailErrorMsg.style.display = "inline"
+        }
+
+        console.log("test email :")
+        console.log(testEmail)
+        return testEmail
+    })
 }
