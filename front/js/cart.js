@@ -1,6 +1,6 @@
-let cart = JSON.parse(localStorage.getItem("Cart"))
+const cart = JSON.parse(localStorage.getItem("Cart"))
 
-let cartTranslatedColors = function() {
+function cartTranslatedColors() {
     let cartFrenchColors = cart
     cartFrenchColors = JSON.parse(JSON.stringify(cartFrenchColors).replaceAll(/(green)+/g, "Vert"))
     cartFrenchColors = JSON.parse(JSON.stringify(cartFrenchColors).replaceAll(/(white)+/g, "Blanc"))
@@ -20,7 +20,8 @@ let cartTranslatedColors = function() {
 console.log("Cart (translated colors) :")
 console.log(cartTranslatedColors())
 
-let apiUrl = 'http://localhost:3000/api/products'
+
+const apiUrl = 'http://localhost:3000/api/products'
 
 const cartItems = document.getElementById("cart__items")
 
@@ -36,12 +37,12 @@ fetch(apiUrl)
         const eachArticle = cartItems.children[i]
         const eachArticleId = cart[i].id
 
-        const productFound = function() {
-            let result = apiInfos.find(product => product._id === eachArticleId)
+        function productFound() {
+            const result = apiInfos.find(product => product._id === eachArticleId)
             return result
         }
 
-        const productFoundIndex = function() {
+        function productFoundIndex() {
             return apiInfos.indexOf(productFound())
         }
 
@@ -72,6 +73,7 @@ fetch(apiUrl)
 })
 .catch(err => console.log("Erreur", err))
 
+
 function cloneArticle() {
     for (let i in cart) {
         // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
@@ -84,8 +86,9 @@ function cloneArticle() {
     }
 }
 
+
 function changeProductQuantity() {
-    let productQuantity = document.querySelectorAll(".itemQuantity")
+    const productQuantity = document.querySelectorAll(".itemQuantity")
 
     productQuantity.forEach(product => 
         product.addEventListener("change", function() {
@@ -93,12 +96,12 @@ function changeProductQuantity() {
             const productId = this.closest("article").dataset.id
             const productColor = this.closest("article").dataset.color
 
-            const productFound = function() {
-                let result = cart.find(product => product.id === productId && product.color === productColor)
+            function productFound() {
+                const result = cart.find(product => product.id === productId && product.color === productColor)
                 return result
             }
     
-            const productFoundIndex = function() {
+            function productFoundIndex() {
                 return cart.indexOf(productFound())
             }
             
@@ -111,14 +114,16 @@ function changeProductQuantity() {
             
             console.log("Cart quantity changed : ")
             console.log(cart)
+            localStorage.setItem("Cart", JSON.stringify(cart))
 
             calculateTotalPrice()
         })
     )
 }
 
+
 function deleteProduct() {
-    let deleteButtons = document.querySelectorAll(".deleteItem")
+    const deleteButtons = document.querySelectorAll(".deleteItem")
 
     deleteButtons.forEach(button => 
         button.addEventListener("click", function() {
@@ -126,12 +131,12 @@ function deleteProduct() {
             const productId = this.closest("article").dataset.id
             const productColor = this.closest("article").dataset.color
 
-            const productFound = function() {
-                let result = cart.find(product => product.id === productId && product.color === productColor)
+            function productFound() {
+                const result = cart.find(product => product.id === productId && product.color === productColor)
                 return result
             }
     
-            const productFoundIndex = function() {
+            function productFoundIndex() {
                 return cart.indexOf(productFound())
             }
 
@@ -142,8 +147,9 @@ function deleteProduct() {
     )
 }
 
-let totalPrice = document.getElementById("totalPrice")
-let totalQuantity = document.getElementById("totalQuantity")
+
+const totalPrice = document.getElementById("totalPrice")
+const totalQuantity = document.getElementById("totalQuantity")
 
 function calculateTotalPrice() {
     const articlesPrices = document.querySelectorAll(".cart__item__price")
@@ -152,7 +158,7 @@ function calculateTotalPrice() {
     let productQuantityAddition = 0
 
     for (let i = 0; i < articlesPrices.length; i++) {
-        let productQuantity = cart[i].quantity
+        const productQuantity = cart[i].quantity
 
         totalPriceAddition += productQuantity * parseInt(articlesPrices[i].dataset.price)
         productQuantityAddition += parseInt(productQuantity)
@@ -162,23 +168,33 @@ function calculateTotalPrice() {
     totalQuantity.innerText = productQuantityAddition
 }
 
+
+const orderButton = document.getElementById("order")
+const firstNameInput = document.getElementById("firstName")
+const lastNameInput = document.getElementById("lastName")
+const addressInput = document.getElementById("address")
+const cityInput = document.getElementById("city")
+const emailInput = document.getElementById("email")
+let contactInfos = new Object()
+
 function validateFormInfos() {
     
-    let firstNameInput = document.getElementById("firstName")
-
-    let regexFirstName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u
+    // FIRST NAME TEST
+    const regexFirstName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u
 
     const firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
     firstNameErrorMsg.innerText = "Veuillez saisir votre prénom"
+    firstNameErrorMsg.style.display = "none"
 
-    firstNameInput.addEventListener("change", function() {
-        let testFirstName = regexFirstName.test(firstNameInput.value)
+    orderButton.addEventListener("click", function(e) {
+        const testFirstName = regexFirstName.test(firstNameInput.value)
 
         if (testFirstName) {
-            firstNameErrorMsg.style.display = "none"
             firstNameInput.value = firstNameInput.value.charAt(0).toUpperCase() + firstNameInput.value.slice(1)
+            contactInfos.firstName = firstNameInput.value
         }
         else {
+            e.preventDefault()
             firstNameErrorMsg.style.display = "inline"
         }
 
@@ -187,24 +203,25 @@ function validateFormInfos() {
         return testFirstName
     })
 
+
+    // LAST NAME TEST
     // Un nom peut n'avoir qu'un seul caractère, exemple : Cédric O, ancien Secrétaire d'état chargé du numérique
     // Le record du nom le plus long est de 47 caractères : Pourroy de L'Auberivière de Quinsonas-Oudinot de Reggio
-
-    let lastNameInput = document.getElementById("lastName")
-
-    let regexLastName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u
+    const regexLastName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u
 
     const lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
     lastNameErrorMsg.innerText = "Veuillez saisir votre nom"
+    lastNameErrorMsg.style.display = "none"
 
-    lastNameInput.addEventListener("change", function() {
-        let testLastName = regexLastName.test(lastNameInput.value)
+    orderButton.addEventListener("click", function(e) {
+        const testLastName = regexLastName.test(lastNameInput.value)
 
         if (testLastName) {
-            lastNameErrorMsg.style.display = "none"
             lastNameInput.value = lastNameInput.value.charAt(0).toUpperCase() + lastNameInput.value.slice(1)
+            contactInfos.lastName = lastNameInput.value
         }
         else {
+            e.preventDefault()
             lastNameErrorMsg.style.display = "inline"
         }
 
@@ -213,20 +230,22 @@ function validateFormInfos() {
         return testLastName
     })
 
-    let addressInput = document.getElementById("address")
 
-    let regexAddress = /^[a-zA-Z0-9àâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{3,}$/u
+    // ADDRESS TEST
+    const regexAddress = /^[a-zA-Z0-9àâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{3,}$/u
 
     const addressErrorMsg = document.getElementById("addressErrorMsg")
     addressErrorMsg.innerText = "Veuillez saisir une adresse valide"
+    addressErrorMsg.style.display = "none"
 
-    addressInput.addEventListener("change", function() {
-        let testAddress = regexAddress.test(addressInput.value)
+    orderButton.addEventListener("click", function(e) {
+        const testAddress = regexAddress.test(addressInput.value)
 
         if (testAddress) {
-            addressErrorMsg.style.display = "none"
+            contactInfos.address = addressInput.value
         }
         else {
+            e.preventDefault()
             addressErrorMsg.style.display = "inline"
         }
 
@@ -235,21 +254,23 @@ function validateFormInfos() {
         return testAddress
     })
 
-    let cityInput = document.getElementById("city")
 
-    let regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{1,}$/u
+    // CITY TEST
+    const regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{1,}$/u
 
     const cityErrorMsg = document.getElementById("cityErrorMsg")
     cityErrorMsg.innerText = "Veuillez saisir votre ville"
+    cityErrorMsg.style.display = "none"
 
-    cityInput.addEventListener("change", function() {
-        let testCity = regexCity.test(cityInput.value)
+    orderButton.addEventListener("click", function(e) {
+        const testCity = regexCity.test(cityInput.value)
 
         if (testCity) {
-            cityErrorMsg.style.display = "none"
             cityInput.value = cityInput.value.charAt(0).toUpperCase() + cityInput.value.slice(1)
+            contactInfos.city = cityInput.value
         }
         else {
+            e.preventDefault()
             cityErrorMsg.style.display = "inline"
         }
 
@@ -258,21 +279,24 @@ function validateFormInfos() {
         return testCity
     })
 
-    let emailInput = document.getElementById("email")
 
-    let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+    // EMAIL TEST
+    const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
 
     const emailErrorMsg = document.getElementById("emailErrorMsg")
     emailErrorMsg.innerText = "Veuillez saisir une adresse email valide"
+    emailErrorMsg.style.display = "none"
 
-    emailInput.addEventListener("change", function() {
-        let testEmail = regexEmail.test(emailInput.value)
+    orderButton.addEventListener("click", function(e) {
+        const testEmail = regexEmail.test(emailInput.value)
 
         if (testEmail) {
-            emailErrorMsg.style.display = "none"
             emailInput.value = emailInput.value.toLowerCase()
+            contactInfos.email = emailInput.value
+            localStorage.setItem("Contact", JSON.stringify(contactInfos))
         }
         else {
+            e.preventDefault()
             emailErrorMsg.style.display = "inline"
         }
 
@@ -281,3 +305,26 @@ function validateFormInfos() {
         return testEmail
     })
 }
+
+// Toujours preventDefault() sur orderButton
+// Fonction séparée createContactInfos ?
+// Effectuer une reqûete POST sur l'API
+// Récupérer l'identifiant de commande dans la réponse de l'API
+/* Rediriger l'utilisateur sur la page confirmation en passant l'id de commande dans l'URL,
+dans le but d'afficher le numéro de commande */
+// Le numéro de commande doit être affiché mais pas conservé/stocké
+
+/* Créer une fonction validateFormInfosV2 dans laquelle (pour éviter les répétitions inutiles) {
+    Déclarer toutes les regex
+    Déclarer tous les messages d'erreur
+    Créer un seul addEventListener au click sur orderButton
+    preventDefault(e)
+    Déclarer tous les test
+    Créer toutes les conditions
+    setItem Contact dans localStorage (si fontion non séparée)
+}
+Tester validateFormInfosV2
+Corriger les bugs éventuels
+Déployer validateFormInfosV2
+Commenter validateFormInfos
+*/
