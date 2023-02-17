@@ -63,6 +63,10 @@ let emailInputValue = emailInput.value;
 
 let products = [];
 
+for (element of cart) {
+    products.push(element.id);
+}
+
 emailInput.addEventListener("change", function () {
     emailInputValue = this.value;
 });
