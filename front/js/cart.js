@@ -61,11 +61,11 @@ const cityInput = document.getElementById("city");
 const emailInput = document.getElementById("email");
 let emailInputValue = emailInput.value;
 
+let products = [];
+
 emailInput.addEventListener("change", function () {
     emailInputValue = this.value;
 });
-
-let contactInfos = new Object();
 
 fetch(apiUrl)
     .then((res) => res.json())
@@ -255,6 +255,17 @@ function validateFormInfos() {
     orderButton.addEventListener("click", function (e) {
         e.preventDefault();
 
+        const contact = {
+            firstName: firstNameInput.value,
+            lastName: lastNameInput.value,
+            address: addressInput.value,
+            city: cityInput.value,
+            email: emailInputValue,
+        };
+
+        console.log(" contact  : ");
+        console.log(contact);
+
         const testFirstName = regexFirstName.test(firstNameInput.value);
         const testLastName = regexLastName.test(lastNameInput.value);
         const testAddress = regexAddress.test(addressInput.value);
@@ -308,42 +319,51 @@ function validateFormInfos() {
             testCity &&
             testEmail
         ) {
-            contactInfos.firstName = firstNameInput.value;
-            contactInfos.lastName = lastNameInput.value;
-            contactInfos.address = addressInput.value;
-            contactInfos.city = cityInput.value;
-            contactInfos.email = emailInput.value;
+            localStorage.setItem("Contact", JSON.stringify(contact));
 
-            localStorage.setItem("Contact", JSON.stringify(contactInfos));
+            // Il faut que products soit un array
+            const postData = {
+                contact,
+                products,
+            };
 
-            send();
+            console.log("postData : ---> ");
+            console.log(postData);
+
+            fetch("http://localhost:3000/api/products/order", {
+                method: "POST",
+                headers: {
+                    "Access-Control-Allow-Headers":
+                        "Origin, Content, Accept, Content-Type, Authorization, X-Requested-With, Access-Control-Allow-Methods",
+                    "Access-Control-Allow-Methods":
+                        "DELETE, POST, GET, OPTIONS, PATCH, PUT",
+                    "Access-Control-Allow-Origin": "*",
+                    // Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(postData),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("data :");
+                    console.log(data);
+                    console.log(
+                        "----------------------------------------------------"
+                    );
+                    document.location.href =
+                        "confirmation.html?id=" + data.orderId;
+                    console.log("data :");
+                    console.log(data);
+                    console.log(
+                        "----------------------------------------------------"
+                    );
+                });
         }
     });
 }
 
-function send() {
-    fetch("http://localhost:3000/api/products/order", {
-        method: "POST",
-        headers: {
-            "Access-Control-Allow-Headers":
-                "Origin, Content, Accept, Content-Type, Authorization, X-Requested-With, Access-Control-Allow-Methods",
-            "Access-Control-Allow-Methods":
-                "DELETE, POST, GET, OPTIONS, PATCH, PUT",
-            "Access-Control-Allow-Origin": "*",
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contactInfos),
-        // Regarder partie commentée dans back/controllers/product.js
-    })
-        .then((res) => res.json())
-        .then((result) => {
-            document.location.href = "confirmation.html?id=" + result.orderId;
-        })
-        .catch((err) =>
-            console.log("Erreur lors de l'envoi des données à l'API", err)
-        );
-}
+// Ne fonctionne pas correctement
+function send() {}
 
 /*
 function validateFormInfosOld() {
