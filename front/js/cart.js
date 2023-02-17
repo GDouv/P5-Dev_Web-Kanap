@@ -184,25 +184,28 @@ function deleteProduct() {
 
     deleteButtons.forEach((button) =>
         button.addEventListener("click", function () {
-            const productId = this.closest("article").dataset.id;
-            const productColor = this.closest("article").dataset.color;
+            const deleteConfirm = confirm("Supprimer l'élément ?");
+            if (deleteConfirm) {
+                const productId = this.closest("article").dataset.id;
+                const productColor = this.closest("article").dataset.color;
 
-            function productFound() {
-                const result = cart.find(
-                    (product) =>
-                        product.id === productId &&
-                        product.color === productColor
-                );
-                return result;
+                function productFound() {
+                    const result = cart.find(
+                        (product) =>
+                            product.id === productId &&
+                            product.color === productColor
+                    );
+                    return result;
+                }
+
+                function productFoundIndex() {
+                    return cart.indexOf(productFound());
+                }
+
+                cart.splice(productFoundIndex(), 1);
+                localStorage.setItem("Cart", JSON.stringify(cart));
+                document.location.reload();
             }
-
-            function productFoundIndex() {
-                return cart.indexOf(productFound());
-            }
-
-            cart.splice(productFoundIndex(), 1);
-            localStorage.setItem("Cart", JSON.stringify(cart));
-            document.location.reload();
         })
     );
 }
