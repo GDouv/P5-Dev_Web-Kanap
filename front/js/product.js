@@ -1,17 +1,17 @@
-let url = "http://localhost:3000/api/products";
+const url = "http://localhost:3000/api/products";
 
-let productImg = document.querySelector(".item__img img");
-let productTitle = document.getElementById("title");
-let productPrice = document.getElementById("price");
-let productDescription = document.getElementById("description");
-let productColors = document.getElementById("colors");
-let productQuantity = document.getElementById("quantity");
+// On récupère tous les éléments nécessaires dans des constantes.
+const productImg = document.querySelector(".item__img img");
+const productTitle = document.getElementById("title");
+const productPrice = document.getElementById("price");
+const productDescription = document.getElementById("description");
+const productColors = document.getElementById("colors");
+const productQuantity = document.getElementById("quantity");
 
-// let pageUrl = new URL(document.location.href);
-
+// On récupère l'id du produit affiché dans l'URL
 const pageHref = new URL(document.location.href);
 const search_params = new URLSearchParams(pageHref.search);
-let productId = search_params.get("id");
+const productId = search_params.get("id");
 console.log("productId : " + productId);
 
 fetch(url + "/" + productId)
@@ -19,19 +19,22 @@ fetch(url + "/" + productId)
     .then((currentProduct) => {
         console.log("currentProduct :");
         console.log(currentProduct);
+
+        // On entre les informations du produit dans la page
         productImg.setAttribute("src", currentProduct.imageUrl);
         productTitle.innerText = currentProduct.name;
         productPrice.innerText = currentProduct.price;
         productDescription.innerText = currentProduct.description;
 
-        let chooseColorText =
+        // Toute la suite de ce fetch est consacrée au menu de choix des couleurs, on peut peut-être faire plus simple.
+        const chooseColorText =
             document.querySelector("#colors option").innerText;
 
         for (let i = 0; i <= 2; i++) {
-            let getExistingColors = document.querySelector(
+            const getExistingColors = document.querySelector(
                 "#colors :nth-child(" + [i + 1] + ")"
             );
-            let currentProductColor = currentProduct.colors[i - 1];
+            const currentProductColor = currentProduct.colors[i - 1];
             getExistingColors.innerText = currentProductColor;
             if (i > 0) {
                 getExistingColors.setAttribute(
@@ -44,8 +47,8 @@ fetch(url + "/" + productId)
         document.querySelector("#colors option").innerText = chooseColorText;
 
         if (currentProduct.colors.length > 2) {
-            let createOption = document.createElement("option");
-            let newOption = productColors.appendChild(createOption);
+            const createOption = document.createElement("option");
+            const newOption = productColors.appendChild(createOption);
             newOption.innerText = currentProduct.colors[2];
             newOption.setAttribute(
                 "value",
@@ -54,25 +57,25 @@ fetch(url + "/" + productId)
         }
 
         if (currentProduct.colors.length > 3) {
-            let createOption = document.createElement("option");
-            let newOption = productColors.appendChild(createOption);
+            const createOption = document.createElement("option");
+            const newOption = productColors.appendChild(createOption);
             newOption.innerText = currentProduct.colors[3];
             newOption.setAttribute(
                 "value",
                 currentProduct.colors[3].toLowerCase()
             );
         }
-        // Façon d'ajouter les couleurs un peu bizarre, à améliorer et passer les couleurs en Français
+        // Façon d'ajouter les couleurs un peu bizarre, à améliorer. (Et passer les couleurs en français ?)
     })
     .catch((err) => console.log("Erreur", err));
 
+// On crée un tableau pour le panier et on récupère le contenu du panier dans localStorage si il en existe un.
 let cart = [];
-
 if (localStorage.getItem("Cart") != null) {
     cart = JSON.parse(localStorage.getItem("Cart"));
 }
 
-// Sauvegarde les infos du produit sélectionné dans un objet JSON
+// Sauvegarde les infos du produit sélectionné dans l'objet JSON jsonProduct
 let currentProductInfos = function () {
     let jsonProduct = {
         id: productId,
@@ -83,6 +86,7 @@ let currentProductInfos = function () {
     return jsonProduct;
 };
 
+// On retrouve le produit sélectionné dans le panier
 let productFound = function () {
     let result = cart.find(
         (product) =>
@@ -91,22 +95,25 @@ let productFound = function () {
     return result;
 };
 
+// On trouve l'index du produit sélectionné productFound dans le panier
 let productFoundIndex = function () {
     return cart.indexOf(productFound());
 };
 
+// On détermine si ce produit était déjà dans le panier ou pas
 let productIsInCart = function () {
     console.log(
         "Ce produit est déjà dans le panier (JSON) : " +
             JSON.stringify(productFound())
     );
-    let booleanResult = false;
+    let inCart = false;
     if (productFound() !== undefined) {
-        booleanResult = true;
+        inCart = true;
     }
-    return booleanResult;
+    return inCart;
 };
 
+// On ajoute le produit sélectionné au panier ou on met à jour la quantité dans le panier, dans la limite de 100 produits identiques
 document.getElementById("addToCart").addEventListener("click", function () {
     if (productColors.value.length < 1) {
         alert("Veuillez sélectionner une couleur");
@@ -134,6 +141,7 @@ document.getElementById("addToCart").addEventListener("click", function () {
 
     console.log("Cart (JSON) : " + JSON.stringify(cart));
 
+    // On sauvegarde le panier dans localStorage
     localStorage.setItem("Cart", JSON.stringify(cart));
 
     alert("Votre sélection a bien été ajoutée au panier !");
