@@ -1,5 +1,7 @@
+// On récupère les données du panier depuis localStorage
 const cart = JSON.parse(localStorage.getItem("Cart"));
 
+// Cette focntion permet de traduire les couleurs utilisées sur le site pour les afficher en français dans le panier.
 function cartTranslatedColors() {
     let cartFrenchColors = cart;
     cartFrenchColors = JSON.parse(
@@ -48,6 +50,7 @@ console.log(cartTranslatedColors());
 
 const apiUrl = "http://localhost:3000/api/products";
 
+// Constantes pour accéder aux différents éléments de la page
 const cartItems = document.getElementById("cart__items");
 
 const totalPrice = document.getElementById("totalPrice");
@@ -59,17 +62,42 @@ const lastNameInput = document.getElementById("lastName");
 const addressInput = document.getElementById("address");
 const cityInput = document.getElementById("city");
 const emailInput = document.getElementById("email");
-let emailInputValue = emailInput.value;
 
+// Regex
+const regexFirstName =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u;
+const regexLastName =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u;
+const regexAddress = /^[a-zA-Z0-9àâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{3,}$/u;
+const regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{1,}$/u;
+const regexEmail = /^[a-zA-Z0-9\.-]+@{1}([a-zA-Z0-9-]+\.)+[a-zA-Z0-9-]{2,4}$/u;
+
+// Messages d'erreur setup
+const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+firstNameErrorMsg.innerText = "Veuillez saisir votre prénom";
+firstNameErrorMsg.style.display = "none";
+
+const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+lastNameErrorMsg.innerText = "Veuillez saisir votre nom";
+lastNameErrorMsg.style.display = "none";
+
+const addressErrorMsg = document.getElementById("addressErrorMsg");
+addressErrorMsg.innerText = "Veuillez saisir une adresse valide";
+addressErrorMsg.style.display = "none";
+
+const cityErrorMsg = document.getElementById("cityErrorMsg");
+cityErrorMsg.innerText = "Veuillez saisir votre ville";
+cityErrorMsg.style.display = "none";
+
+const emailErrorMsg = document.getElementById("emailErrorMsg");
+emailErrorMsg.innerText = "Veuillez saisir une adresse email valide";
+emailErrorMsg.style.display = "none";
+
+// On crée un tableau products et on y insère les id des produits uniquement, car la validation de commande ne gère pas encore les couleurs et les quantités
 let products = [];
-
 for (element of cart) {
     products.push(element.id);
 }
-
-emailInput.addEventListener("change", function () {
-    emailInputValue = this.value;
-});
 
 fetch(apiUrl)
     .then((res) => res.json())
@@ -79,43 +107,49 @@ fetch(apiUrl)
 
         cloneArticle();
 
-        for (let i in cart) {
-            const eachArticle = cartItems.children[i];
-            const eachArticleId = cart[i].id;
+        // Permet d'afficher tous les produits du panier sur la page panier
+        // Je ne sais pas comment extraire cette fonction du fetch car si je le fais et que je l'appelle, les produits ne s'affichent pas.
+        function getCartProducts() {
+            for (let i in cart) {
+                const eachArticle = cartItems.children[i];
+                const eachArticleId = cart[i].id;
 
-            function productFound() {
-                const result = apiInfos.find(
-                    (product) => product._id === eachArticleId
+                function productFound() {
+                    const result = apiInfos.find(
+                        (product) => product._id === eachArticleId
+                    );
+                    return result;
+                }
+
+                function productFoundIndex() {
+                    return apiInfos.indexOf(productFound());
+                }
+
+                const apiProduct = apiInfos[productFoundIndex()];
+
+                eachArticle
+                    .querySelector(".cart__item__img img")
+                    .setAttribute("src", apiProduct.imageUrl);
+                eachArticle.querySelector(
+                    ".cart__item__content__description h2"
+                ).innerText = apiProduct.name;
+                eachArticle.querySelector(
+                    ".cart__item__content__description p"
+                ).innerText = cartTranslatedColors()[i].color;
+                const eachArticlePrice = eachArticle.querySelector(
+                    ".cart__item__content__description p:nth-of-type(2)"
                 );
-                return result;
+                eachArticlePrice.innerText = apiProduct.price + ",00 €";
+                eachArticlePrice.classList.add("cart__item__price");
+                eachArticlePrice.dataset.price = apiProduct.price;
+                eachArticle.querySelector(".itemQuantity").value =
+                    cart[i].quantity;
+
+                eachArticle.dataset.id = eachArticleId;
+                eachArticle.dataset.color = cart[i].color;
             }
-
-            function productFoundIndex() {
-                return apiInfos.indexOf(productFound());
-            }
-
-            const apiProduct = apiInfos[productFoundIndex()];
-
-            eachArticle
-                .querySelector(".cart__item__img img")
-                .setAttribute("src", apiProduct.imageUrl);
-            eachArticle.querySelector(
-                ".cart__item__content__description h2"
-            ).innerText = apiProduct.name;
-            eachArticle.querySelector(
-                ".cart__item__content__description p"
-            ).innerText = cartTranslatedColors()[i].color;
-            const eachArticlePrice = eachArticle.querySelector(
-                ".cart__item__content__description p:nth-of-type(2)"
-            );
-            eachArticlePrice.innerText = apiProduct.price + ",00 €";
-            eachArticlePrice.classList.add("cart__item__price");
-            eachArticlePrice.dataset.price = apiProduct.price;
-            eachArticle.querySelector(".itemQuantity").value = cart[i].quantity;
-
-            eachArticle.dataset.id = eachArticleId;
-            eachArticle.dataset.color = cart[i].color;
         }
+        getCartProducts();
 
         changeProductQuantity();
 
@@ -131,7 +165,7 @@ fetch(apiUrl)
         console.log("Erreur lors de la récupération des données de l'API", err)
     );
 
-// A quoi sert cette fonction ?
+// A quoi sert cette fonction ? Elle sert sûrement à pouvoir générer plusieurs articles en html sur la page panier.
 function cloneArticle() {
     for (let i in cart) {
         // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
@@ -144,6 +178,7 @@ function cloneArticle() {
     }
 }
 
+// Cette fonction sert à mettre à jour la quantité d'un produit
 function changeProductQuantity() {
     const productQuantity = document.querySelectorAll(".itemQuantity");
 
@@ -180,6 +215,8 @@ function changeProductQuantity() {
     );
 }
 
+// On peut peut-être rassembler les fonctions productFound, productFoundIndex, etc dans une fonction à part appellable dans celle-ci et dans la précédente
+// Cette fonction permet de supprimer un produit du panier
 function deleteProduct() {
     const deleteButtons = document.querySelectorAll(".deleteItem");
 
@@ -211,6 +248,7 @@ function deleteProduct() {
     );
 }
 
+// Cette fponction calcul le prix total des articles dans le panier
 function calculateTotalPrice() {
     const articlesPrices = document.querySelectorAll(".cart__item__price");
 
@@ -229,37 +267,11 @@ function calculateTotalPrice() {
     totalQuantity.innerText = productQuantityAddition;
 }
 
+/* Cette fonction permet de vérifier que les informations entrée par l'utilisateur ont un format correct,
+d'afficher des messages d'erreur si ce n'est pas le cas,
+et d'envoyer les données à l'API puis d'être redirigé vers la page confirmation.
+*/
 function validateFormInfos() {
-    const regexFirstName =
-        /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u;
-    const regexLastName =
-        /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u;
-    const regexAddress =
-        /^[a-zA-Z0-9àâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{3,}$/u;
-    const regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{1,}$/u;
-    const regexEmail =
-        /^[a-zA-Z0-9\.-]+@{1}([a-zA-Z0-9-]+\.)+[a-zA-Z0-9-]{2,4}$/u;
-
-    const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-    firstNameErrorMsg.innerText = "Veuillez saisir votre prénom";
-    firstNameErrorMsg.style.display = "none";
-
-    const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-    lastNameErrorMsg.innerText = "Veuillez saisir votre nom";
-    lastNameErrorMsg.style.display = "none";
-
-    const addressErrorMsg = document.getElementById("addressErrorMsg");
-    addressErrorMsg.innerText = "Veuillez saisir une adresse valide";
-    addressErrorMsg.style.display = "none";
-
-    const cityErrorMsg = document.getElementById("cityErrorMsg");
-    cityErrorMsg.innerText = "Veuillez saisir votre ville";
-    cityErrorMsg.style.display = "none";
-
-    const emailErrorMsg = document.getElementById("emailErrorMsg");
-    emailErrorMsg.innerText = "Veuillez saisir une adresse email valide";
-    emailErrorMsg.style.display = "none";
-
     orderButton.addEventListener("click", function (e) {
         e.preventDefault();
 
@@ -268,17 +280,18 @@ function validateFormInfos() {
             lastName: lastNameInput.value,
             address: addressInput.value,
             city: cityInput.value,
-            email: emailInputValue,
+            email: emailInput.value,
         };
 
         console.log(" contact  : ");
         console.log(contact);
 
+        // Tests grâce aux regex
         const testFirstName = regexFirstName.test(firstNameInput.value);
         const testLastName = regexLastName.test(lastNameInput.value);
         const testAddress = regexAddress.test(addressInput.value);
         const testCity = regexCity.test(cityInput.value);
-        const testEmail = regexEmail.test(emailInputValue);
+        const testEmail = regexEmail.test(emailInput.value);
 
         if (testFirstName) {
             firstNameInput.value =
@@ -314,7 +327,7 @@ function validateFormInfos() {
         }
 
         if (testEmail) {
-            emailInput.value = emailInputValue.toLowerCase();
+            emailInput.value = emailInput.value.toLowerCase();
             emailErrorMsg.style.display = "none";
         } else {
             emailErrorMsg.style.display = "inline";
@@ -338,6 +351,7 @@ function validateFormInfos() {
             console.log("postData : ---> ");
             console.log(postData);
 
+            // On envoie les données sous le format requis dans une requête POST à l'API
             fetch("http://localhost:3000/api/products/order", {
                 method: "POST",
                 headers: {
