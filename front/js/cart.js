@@ -131,6 +131,7 @@ fetch(apiUrl)
         console.log("Erreur lors de la récupération des données de l'API", err)
     );
 
+// A quoi sert cette fonction ?
 function cloneArticle() {
     for (let i in cart) {
         // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
@@ -352,25 +353,12 @@ function validateFormInfos() {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log("data :");
-                    console.log(data);
-                    console.log(
-                        "----------------------------------------------------"
-                    );
                     document.location.href =
                         "confirmation.html?id=" + data.orderId;
-                    console.log("data :");
-                    console.log(data);
-                    console.log(
-                        "----------------------------------------------------"
-                    );
                 });
         }
     });
 }
-
-// Ne fonctionne pas correctement
-function send() {}
 
 /*
 function validateFormInfosOld() {

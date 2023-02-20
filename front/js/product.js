@@ -7,10 +7,10 @@ let productDescription = document.getElementById("description");
 let productColors = document.getElementById("colors");
 let productQuantity = document.getElementById("quantity");
 
-let pageUrl = new URL(document.location.href);
+// let pageUrl = new URL(document.location.href);
 
-pageHref = new URL(pageUrl.href);
-let search_params = new URLSearchParams(pageHref.search);
+const pageHref = new URL(document.location.href);
+const search_params = new URLSearchParams(pageHref.search);
 let productId = search_params.get("id");
 console.log("productId : " + productId);
 
