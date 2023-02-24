@@ -108,7 +108,7 @@ fetch(apiUrl)
         cloneArticle();
 
         // Permet d'afficher tous les produits du panier sur la page panier
-        // Je ne sais pas comment extraire cette fonction du fetch car si je le fais et que je l'appelle, les produits ne s'affichent pas.
+        // Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
         function getCartProducts() {
             for (let i in cart) {
                 const eachArticle = cartItems.children[i];
@@ -165,7 +165,7 @@ fetch(apiUrl)
         console.log("Erreur lors de la récupération des données de l'API", err)
     );
 
-// A quoi sert cette fonction ? Elle sert sûrement à pouvoir générer plusieurs articles en html sur la page panier.
+// Cette fonction sert à dupliquer le front de l'objet dans le panier pour afficher plusieurs objets dans le panier.
 function cloneArticle() {
     for (let i in cart) {
         // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
@@ -175,6 +175,13 @@ function cloneArticle() {
             const cloneArticle = productInCartItem.cloneNode(true);
             cartItems.appendChild(cloneArticle);
         }
+    }
+
+    if (cart.length < 1) {
+        const emptyCartItem = cartItems.children[0];
+        emptyCartItem.remove();
+        let createP = cartItems.appendChild(document.createElement("p"));
+        createP.textContent = "Votre panier est vide !";
     }
 }
 
@@ -187,17 +194,13 @@ function changeProductQuantity() {
             const productId = this.closest("article").dataset.id;
             const productColor = this.closest("article").dataset.color;
 
-            function productFound() {
+            function productFoundIndex() {
                 const result = cart.find(
                     (product) =>
                         product.id === productId &&
                         product.color === productColor
                 );
-                return result;
-            }
-
-            function productFoundIndex() {
-                return cart.indexOf(productFound());
+                return cart.indexOf(result);
             }
 
             if (this.value <= 100) {
@@ -215,7 +218,8 @@ function changeProductQuantity() {
     );
 }
 
-// On peut peut-être rassembler les fonctions productFound, productFoundIndex, etc dans une fonction à part appellable dans celle-ci et dans la précédente
+// On peut peut-être extraire la fonction productFoundIndex des fonctions deleteProduct et changeProductQuantity,
+// mais les constantes productId et productcolor n'ont l'air de fonctionner qu'à l'intérieur de ces fonctions.
 // Cette fonction permet de supprimer un produit du panier
 function deleteProduct() {
     const deleteButtons = document.querySelectorAll(".deleteItem");
@@ -227,17 +231,13 @@ function deleteProduct() {
                 const productId = this.closest("article").dataset.id;
                 const productColor = this.closest("article").dataset.color;
 
-                function productFound() {
+                function productFoundIndex() {
                     const result = cart.find(
                         (product) =>
                             product.id === productId &&
                             product.color === productColor
                     );
-                    return result;
-                }
-
-                function productFoundIndex() {
-                    return cart.indexOf(productFound());
+                    return cart.indexOf(result);
                 }
 
                 cart.splice(productFoundIndex(), 1);
@@ -248,7 +248,7 @@ function deleteProduct() {
     );
 }
 
-// Cette fponction calcul le prix total des articles dans le panier
+// Cette fonction calcul le prix total des articles dans le panier
 function calculateTotalPrice() {
     const articlesPrices = document.querySelectorAll(".cart__item__price");
 
