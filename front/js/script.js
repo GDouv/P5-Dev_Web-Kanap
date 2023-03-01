@@ -1,105 +1,51 @@
-const url = "http://localhost:3000/api/products";
+// script.js correspond à la page d'accueil, index.html
+
+const apiUrl = "http://localhost:3000/api/products";
+
+// Cette fonction ajoute les éléments de contenu d'un produit sur la page d'accueil.
+function appendContent(item) {
+    const items = document.getElementById("items");
+    const createLink = document.createElement("a");
+    const createArticle = document.createElement("article");
+    const createImg = document.createElement("img");
+    const createH3 = document.createElement("h3");
+    const createDescription = document.createElement("p");
+    const createPrix = document.createElement("p");
+
+    // On crée un lien dans la section qui a pour id "items"
+    items.appendChild(createLink);
+    createLink.setAttribute("href", "./product.html?id=" + item._id);
+
+    // On crée un article dans le lien
+    createLink.appendChild(createArticle);
+
+    // On crée les balises "img, "h3" et "p" dans l'article
+    createArticle.appendChild(createImg);
+    createImg.setAttribute("src", item.imageUrl);
+    createImg.setAttribute("alt", item.altTxt);
+
+    createArticle.appendChild(createH3);
+    createH3.innerText = item.name;
+
+    createArticle.appendChild(createDescription);
+    createDescription.className = "description";
+    createDescription.innerText = item.description;
+
+    createArticle.appendChild(createPrix);
+    createPrix.className = "prix";
+    createPrix.innerText = "Prix : " + item.price + " €";
+}
 
 // Afficher les données de l'API sur la page d'accueil
-fetch(url)
+fetch(apiUrl)
     .then((res) => res.json())
-    .then((data) => {
-        // Le tableau data contient les données de l'API.
-        console.log(data);
+    .then((products) => {
+        // Le tableau products contient toutes les produits et leurs données issues de l'API.
 
-        // Ne fonctionne pas lorsque les constantes de création d'éléments sont à l'extérieur de la boucle. Pourquoi ?
-        /* On crée une boucle d'une longueur du tableau data qui créera tous les éléments du DOM
-        en récupérant dans data les valeurs à ajouter à chaque élément. */
-        for (const product of data) {
-            // On sélectionne la section qui a pour id "items"
-            const items = document.getElementById("items");
-
-            // On crée un lien dans la section qui a pour id "items"
-            const createLink = document.createElement("a");
-            items.appendChild(createLink);
-            createLink.setAttribute("href", "./product.html?id=" + product._id);
-
-            // On crée un article dans le lien
-            const createArticle = document.createElement("article");
-            createLink.appendChild(createArticle);
-
-            // On crée les balises "img, "h3" et "p" dans l'article
-            const createImg = document.createElement("img");
-            createArticle.appendChild(createImg);
-            createImg.setAttribute("src", product.imageUrl);
-            createImg.setAttribute("alt", product.altTxt);
-
-            const createH3 = document.createElement("h3");
-            createArticle.appendChild(createH3);
-            createH3.innerText = product.name;
-
-            const createDescription = document.createElement("p");
-            createArticle.appendChild(createDescription);
-            createDescription.className = "description";
-            createDescription.innerText = product.description;
-            const createPrix = document.createElement("p");
-            createArticle.appendChild(createPrix);
-            createPrix.className = "prix";
-            createPrix.innerText = "Prix : " + product.price + " €";
+        /* On crée une boucle d'une longueur du tableau products qui créera tous les éléments du DOM
+        en récupérant dans products les valeurs à ajouter à chaque élément. */
+        for (const product of products) {
+            appendContent(product);
         }
     })
     .catch((err) => console.log("Erreur", err));
-
-// // Afficher les données de l'API dans la console
-// fetch(url)
-//     .then((res) => res.json())
-//     .then((data) => {
-//         console.log(data);
-
-//         // On sélectionne la section qui a pour id "items"
-//         const items = document.getElementById("items");
-
-//         // On crée une boucle d'une longueur du tableau data qui créera tous les éléments.
-//         for (let i = 0; i < data.length; i++) {
-//             // On crée un lien dans la section qui a pour id "items"
-//             let createLink = document.createElement("a");
-//             items.appendChild(createLink);
-
-//             // On crée un article dans le lien
-//             let createArticle = document.createElement("article");
-//             createLink.appendChild(createArticle);
-
-//             // On crée les balises "img, "h3" et "p" dans l'article
-//             let createImg = document.createElement("img");
-//             createArticle.appendChild(createImg);
-
-//             let createH3 = document.createElement("h3");
-//             createArticle.appendChild(createH3);
-
-//             let createDescription = document.createElement("p");
-//             let createPrix = document.createElement("p");
-//             createArticle.appendChild(createDescription);
-//             createArticle.appendChild(createPrix);
-//             createDescription.className = "description";
-//             createPrix.className = "prix";
-//         }
-
-//         /* On crée une boucle qui itère selon la longueur du tableau data afin d'insérer les
-// id, titres, images, alts, descriptions et prix des produits. */
-//         for (let i = 0; i < data.length; i++) {
-//             document
-//                 .querySelectorAll("a article img")
-//                 [i].setAttribute("src", data[i].imageUrl);
-//             document
-//                 .querySelectorAll("a article img")
-//                 [i].setAttribute("alt", data[i].altTxt);
-//             document.querySelectorAll("a article h3")[i].innerText =
-//                 data[i].name;
-//             document.getElementsByClassName("description")[i].innerText =
-//                 data[i].description;
-//             document.getElementsByClassName("prix")[i].innerText =
-//                 "Prix : " + data[i].price + " €";
-//             document
-//                 .querySelectorAll("section a")
-//                 [i].setAttribute("href", "./product.html?id=" + data[i]._id);
-//         }
-
-//         // let url = window.location.href;
-//         // url += "?" +
-//     })
-//     .catch((err) => console.log("Erreur", err));
