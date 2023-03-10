@@ -123,6 +123,8 @@ function findProductInApi(api) {
     return found;
 }
 
+// Commit cart.js pardon
+
 function getImageUrl(api) {
     const imageUrl = findProductInApi(api).imageUrl;
     cartItemImg.setAttribute("src", imageUrl);
