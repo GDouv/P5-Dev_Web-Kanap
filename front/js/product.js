@@ -13,8 +13,8 @@ const productQuantity = document.getElementById("quantity");
 // On récupère l'id du produit affiché dans l'URL
 const pageHref = new URL(document.location.href);
 const search_params = new URLSearchParams(pageHref.search);
-const productId = search_params.get("id");
-console.log("productId : " + productId);
+const productIdFromUrl = search_params.get("id");
+console.log("productIdFromUrl : " + productIdFromUrl);
 
 // Cette fonction ajoute toutes les informations du produit affiché sur la page.
 function appendContent(item) {
@@ -59,7 +59,7 @@ function addColorsInColorsSelect(color) {
     }
 } // Améliorer la façon d'ajouter les couleurs ?
 
-fetch(apiUrl + "/" + productId)
+fetch(apiUrl + "/" + productIdFromUrl)
     .then((res) => res.json())
     .then((currentProduct) => {
         // Current product contient les information en JSON du produit dont l'id est dans l'URL.
@@ -84,7 +84,7 @@ if (localStorage.getItem("Cart") != null) {
 // Sauvegarde les infos du produit sélectionné dans l'objet JSON jsonProduct
 function currentProduct() {
     const jsonProduct = {
-        id: productId,
+        id: productIdFromUrl,
         quantity: productQuantity.value,
         color: productColors.value,
     };
@@ -96,7 +96,8 @@ function currentProduct() {
 function findProductInCart() {
     const result = cart.find(
         (product) =>
-            product.id === productId && product.color === productColors.value
+            product.id === productIdFromUrl &&
+            product.color === productColors.value
     );
     return result;
 }

@@ -2,7 +2,7 @@
 const cart = JSON.parse(localStorage.getItem("Cart"));
 
 // Cette focntion permet de traduire les couleurs utilisées sur le site pour les afficher en français dans le panier.
-function cartTranslatedColors() {
+function translateColors() {
     let cartFrenchColors = cart;
     cartFrenchColors = JSON.parse(
         JSON.stringify(cartFrenchColors).replaceAll(/(green)+/g, "Vert")
@@ -46,7 +46,8 @@ function cartTranslatedColors() {
     return cartFrenchColors;
 }
 console.log("Cart (translated colors) :");
-console.log(cartTranslatedColors());
+console.log(translateColors());
+console.log("--------------------------------");
 
 const apiUrl = "http://localhost:3000/api/products";
 
@@ -93,63 +94,113 @@ const emailErrorMsg = document.getElementById("emailErrorMsg");
 emailErrorMsg.innerText = "Veuillez saisir une adresse email valide";
 emailErrorMsg.style.display = "none";
 
-// On crée un tableau products et on y insère les id des produits uniquement, car la validation de commande ne gère pas encore les couleurs et les quantités
+// On crée un tableau products et on y insère les id des produits uniquement, car la validation de commande ne gère pas encore les couleurs et les quantités.
 let products = [];
 for (element of cart) {
     products.push(element.id);
 }
+
+const cartItem = document.querySelector(".cart__item");
+const cartItemImg = document.querySelector(".cart__item__img img");
+
+function appendContent(product) {
+    cartItem.dataset.id = product.id;
+    cartItem.dataset.color = product.color;
+    // const imageUrl = findProductInApi(apiInfos).imageUrl;
+    // cartItemImg.setAttribute("src", getImageUrl(product));
+
+    cartItems.appendChild(cartItem.cloneNode(true));
+}
+
+// Cette fonction supprime le premier article (élément exemple). (utilisable aussi quand le panier est vide)
+function deleteExample() {
+    cartItems.removeChild(document.getElementsByTagName("article")[0]);
+}
+
+// Cette fonction retourne le json du produit du produit trouvé dans le panier grâce à son id.
+function findProductInApi(api) {
+    const found = api.find((product) => product._id === cartItem.dataset.id);
+    return found;
+}
+
+function getImageUrl(api) {
+    const imageUrl = findProductInApi(api).imageUrl;
+    cartItemImg.setAttribute("src", imageUrl);
+    return imageUrl;
+}
+
+// function findProductInfosInApi(api) {}
+
+// Utiliser les data attributes pour insérer l'ID et la couleur du produit,
+// récupérer les autres informations à afficher grâce à cet ID dans l'API.
 
 fetch(apiUrl)
     .then((res) => res.json())
     .then((apiInfos) => {
         console.log("API Infos :");
         console.log(apiInfos);
+        // const imageUrl = findProductInApi(apiInfos).imageUrl;
 
-        cloneArticle();
+        for (const productsInCart of cart) {
+            appendContent(productsInCart);
+            console.log("findProductInApi :");
+            console.log(findProductInApi(apiInfos));
+            console.log("--------------------------------");
 
-        // Permet d'afficher tous les produits du panier sur la page panier
-        // Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
-        function getCartProducts() {
-            for (let i in cart) {
-                const eachArticle = cartItems.children[i];
-                const eachArticleId = cart[i].id;
-
-                function productFound() {
-                    const result = apiInfos.find(
-                        (product) => product._id === eachArticleId
-                    );
-                    return result;
-                }
-
-                function productFoundIndex() {
-                    return apiInfos.indexOf(productFound());
-                }
-
-                const apiProduct = apiInfos[productFoundIndex()];
-
-                eachArticle
-                    .querySelector(".cart__item__img img")
-                    .setAttribute("src", apiProduct.imageUrl);
-                eachArticle.querySelector(
-                    ".cart__item__content__description h2"
-                ).innerText = apiProduct.name;
-                eachArticle.querySelector(
-                    ".cart__item__content__description p"
-                ).innerText = cartTranslatedColors()[i].color;
-                const eachArticlePrice = eachArticle.querySelector(
-                    ".cart__item__content__description p:nth-of-type(2)"
-                );
-                eachArticlePrice.innerText = apiProduct.price + ",00 €";
-                eachArticlePrice.classList.add("cart__item__price");
-                eachArticlePrice.dataset.price = apiProduct.price;
-                eachArticle.querySelector(".itemQuantity").value =
-                    cart[i].quantity;
-
-                eachArticle.dataset.id = eachArticleId;
-                eachArticle.dataset.color = cart[i].color;
-            }
+            // cartItemImg.setAttribute("src", getImageUrl(apiInfos));
+            console.log("imageUrl : ");
+            console.log(getImageUrl(apiInfos));
+            console.log("--------------------------------");
         }
-        getCartProducts();
+
+        deleteExample();
+
+        // cloneArticle();
+
+        // // Permet d'afficher tous les produits du panier sur la page panier
+        // // Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
+        // function displayProductsFromCart() {
+        //     // On crée une boucle qui itère sur chaque produit dans le panier ("cart").
+        //     for (let i in cart) {
+        //         const eachArticle = cartItems.children[i];
+        //         const eachArticleId = cart[i].id;
+
+        //         function productFound() {
+        //             const result = apiInfos.find(
+        //                 (product) => product._id === eachArticleId
+        //             );
+        //             return result;
+        //         }
+
+        //         function productFoundIndex() {
+        //             return apiInfos.indexOf(productFound());
+        //         }
+
+        //         const apiProduct = apiInfos[productFoundIndex()];
+
+        //         eachArticle
+        //             .querySelector(".cart__item__img img")
+        //             .setAttribute("src", apiProduct.imageUrl);
+        //         eachArticle.querySelector(
+        //             ".cart__item__content__description h2"
+        //         ).innerText = apiProduct.name;
+        //         eachArticle.querySelector(
+        //             ".cart__item__content__description p"
+        //         ).innerText = translateColors()[i].color;
+        //         const eachArticlePrice = eachArticle.querySelector(
+        //             ".cart__item__content__description p:nth-of-type(2)"
+        //         );
+        //         eachArticlePrice.innerText = apiProduct.price + ",00 €";
+        //         eachArticlePrice.classList.add("cart__item__price");
+        //         eachArticlePrice.dataset.price = apiProduct.price;
+        //         eachArticle.querySelector(".itemQuantity").value =
+        //             cart[i].quantity;
+
+        //         eachArticle.dataset.id = eachArticleId;
+        //         eachArticle.dataset.color = cart[i].color;
+        //     }
+        // }
+        // displayProductsFromCart();
 
         changeProductQuantity();
 
@@ -165,25 +216,25 @@ fetch(apiUrl)
         console.log("Erreur lors de la récupération des données de l'API", err)
     );
 
-// Cette fonction sert à dupliquer le front de l'objet dans le panier pour afficher plusieurs objets dans le panier.
-function cloneArticle() {
-    for (let i in cart) {
-        // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
+// // Cette fonction sert à dupliquer le front de l'objet dans le panier pour afficher plusieurs objets dans le panier.
+// function cloneArticle() {
+//     for (let i in cart) {
+//         // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
 
-        if (i > 0) {
-            const productInCartItem = cartItems.children[0];
-            const cloneArticle = productInCartItem.cloneNode(true);
-            cartItems.appendChild(cloneArticle);
-        }
-    }
+//         if (i > 0) {
+//             const productInCartItem = cartItems.children[0];
+//             const cloneArticle = productInCartItem.cloneNode(true);
+//             cartItems.appendChild(cloneArticle);
+//         }
+//     }
 
-    if (cart.length < 1) {
-        const emptyCartItem = cartItems.children[0];
-        emptyCartItem.remove();
-        let createP = cartItems.appendChild(document.createElement("p"));
-        createP.textContent = "Votre panier est vide !";
-    }
-}
+//     if (cart.length < 1) {
+//         const emptyCartItem = cartItems.children[0];
+//         emptyCartItem.remove();
+//         let createP = cartItems.appendChild(document.createElement("p"));
+//         createP.textContent = "Votre panier est vide !";
+//     }
+// }
 
 // Cette fonction sert à mettre à jour la quantité d'un produit
 function changeProductQuantity() {
