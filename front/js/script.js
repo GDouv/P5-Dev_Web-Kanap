@@ -36,6 +36,13 @@ function appendContent(item) {
     createPrix.innerText = "Prix : " + item.price + " €";
 }
 
+// Faire en sorte que cette fonction marche : Si l'id dans l'url ne correspond pas à l'id
+// d'un produit dans l'API, retourner une erreur 404 !!!!!!!!!!!!!!!!!!!!!!!!!
+function productExist() {
+    const result = products.find((product) => product.id === product.id);
+    return result;
+}
+
 // Afficher les données de l'API sur la page d'accueil
 fetch(apiUrl)
     .then((res) => res.json())

@@ -76,6 +76,7 @@ fetch(apiUrl + "/" + productIdFromUrl)
     .catch((err) => console.log("Erreur", err));
 
 // On crée un tableau pour le panier et on récupère le contenu du panier dans localStorage si il existe déjà.
+// Sert à éviter que tout le contenu de localStorage ne soit remplacé lors de l'ajout de plusieurs produits différents.
 let cart = [];
 if (localStorage.getItem("Cart") != null) {
     cart = JSON.parse(localStorage.getItem("Cart"));
