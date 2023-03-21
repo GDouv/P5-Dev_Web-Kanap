@@ -1,5 +1,8 @@
 // On récupère les données du panier depuis localStorage
-const cart = JSON.parse(localStorage.getItem("Cart"));
+let cart = [];
+if (localStorage.getItem("Cart") != null) {
+    cart = JSON.parse(localStorage.getItem("Cart"));
+}
 
 // Cette focntion permet de traduire les couleurs utilisées sur le site pour les afficher en français dans le panier.
 function translateColors() {
@@ -159,50 +162,50 @@ fetch(apiUrl)
 
         // cloneArticle();
 
-        // // Permet d'afficher tous les produits du panier sur la page panier
-        // // Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
-        // function displayProductsFromCart() {
-        //     // On crée une boucle qui itère sur chaque produit dans le panier ("cart").
-        //     for (let i in cart) {
-        //         const eachArticle = cartItems.children[i];
-        //         const eachArticleId = cart[i].id;
+        // Permet d'afficher tous les produits du panier sur la page panier
+        // Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
+        function displayProductsFromCart() {
+            // On crée une boucle qui itère sur chaque produit dans le panier ("cart").
+            for (let i in cart) {
+                const eachArticle = cartItems.children[i];
+                const eachArticleId = cart[i].id;
 
-        //         function productFound() {
-        //             const result = apiInfos.find(
-        //                 (product) => product._id === eachArticleId
-        //             );
-        //             return result;
-        //         }
+                function productFound() {
+                    const result = apiInfos.find(
+                        (product) => product._id === eachArticleId
+                    );
+                    return result;
+                }
 
-        //         function productFoundIndex() {
-        //             return apiInfos.indexOf(productFound());
-        //         }
+                function productFoundIndex() {
+                    return apiInfos.indexOf(productFound());
+                }
 
-        //         const apiProduct = apiInfos[productFoundIndex()];
+                const apiProduct = apiInfos[productFoundIndex()];
 
-        //         eachArticle
-        //             .querySelector(".cart__item__img img")
-        //             .setAttribute("src", apiProduct.imageUrl);
-        //         eachArticle.querySelector(
-        //             ".cart__item__content__description h2"
-        //         ).innerText = apiProduct.name;
-        //         eachArticle.querySelector(
-        //             ".cart__item__content__description p"
-        //         ).innerText = translateColors()[i].color;
-        //         const eachArticlePrice = eachArticle.querySelector(
-        //             ".cart__item__content__description p:nth-of-type(2)"
-        //         );
-        //         eachArticlePrice.innerText = apiProduct.price + ",00 €";
-        //         eachArticlePrice.classList.add("cart__item__price");
-        //         eachArticlePrice.dataset.price = apiProduct.price;
-        //         eachArticle.querySelector(".itemQuantity").value =
-        //             cart[i].quantity;
+                eachArticle
+                    .querySelector(".cart__item__img img")
+                    .setAttribute("src", apiProduct.imageUrl);
+                eachArticle.querySelector(
+                    ".cart__item__content__description h2"
+                ).innerText = apiProduct.name;
+                eachArticle.querySelector(
+                    ".cart__item__content__description p"
+                ).innerText = translateColors()[i].color;
+                const eachArticlePrice = eachArticle.querySelector(
+                    ".cart__item__content__description p:nth-of-type(2)"
+                );
+                eachArticlePrice.innerText = apiProduct.price + ",00 €";
+                eachArticlePrice.classList.add("cart__item__price");
+                eachArticlePrice.dataset.price = apiProduct.price;
+                eachArticle.querySelector(".itemQuantity").value =
+                    cart[i].quantity;
 
-        //         eachArticle.dataset.id = eachArticleId;
-        //         eachArticle.dataset.color = cart[i].color;
-        //     }
-        // }
-        // displayProductsFromCart();
+                eachArticle.dataset.id = eachArticleId;
+                eachArticle.dataset.color = cart[i].color;
+            }
+        }
+        displayProductsFromCart();
 
         changeProductQuantity();
 
