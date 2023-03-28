@@ -1,52 +1,52 @@
 // On récupère les données du panier depuis localStorage
 let cart = [];
 if (localStorage.getItem("Cart") != null) {
-    cart = JSON.parse(localStorage.getItem("Cart"));
+	cart = JSON.parse(localStorage.getItem("Cart"));
 }
 
 // Cette focntion permet de traduire les couleurs utilisées sur le site pour les afficher en français dans le panier.
 function translateColors() {
-    let cartFrenchColors = cart;
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(green)+/g, "Vert")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(white)+/g, "Blanc")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(black)+/g, "Noir")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(yellow)+/g, "Jaune")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(red)+/g, "Rouge")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(orange)+/g, "Orange")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(pink)+/g, "Rose")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(grey)+/g, "Gris")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(purple)+/g, "Violet")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(navy)+/g, "Bleu marine")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(silver)+/g, "Argenté")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(brown)+/g, "Marron")
-    );
-    cartFrenchColors = JSON.parse(
-        JSON.stringify(cartFrenchColors).replaceAll(/(blue)+/g, "Bleu")
-    );
-    return cartFrenchColors;
+	let cartFrenchColors = cart;
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(green)+/g, "Vert")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(white)+/g, "Blanc")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(black)+/g, "Noir")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(yellow)+/g, "Jaune")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(red)+/g, "Rouge")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(orange)+/g, "Orange")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(pink)+/g, "Rose")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(grey)+/g, "Gris")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(purple)+/g, "Violet")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(navy)+/g, "Bleu marine")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(silver)+/g, "Argenté")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(brown)+/g, "Marron")
+	);
+	cartFrenchColors = JSON.parse(
+		JSON.stringify(cartFrenchColors).replaceAll(/(blue)+/g, "Bleu")
+	);
+	return cartFrenchColors;
 }
 console.log("Cart (translated colors) :");
 console.log(translateColors());
@@ -69,9 +69,9 @@ const emailInput = document.getElementById("email");
 
 // Regex
 const regexFirstName =
-    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u;
+	/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u;
 const regexLastName =
-    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u;
+	/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u;
 const regexAddress = /^[a-zA-Z0-9àâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{3,}$/u;
 const regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{1,}$/u;
 const regexEmail = /^[a-zA-Z0-9\.-]+@{1}([a-zA-Z0-9-]+\.)+[a-zA-Z0-9-]{2,4}$/u;
@@ -100,38 +100,38 @@ emailErrorMsg.style.display = "none";
 // On crée un tableau products et on y insère les id des produits uniquement, car la validation de commande ne gère pas encore les couleurs et les quantités.
 let products = [];
 for (element of cart) {
-    products.push(element.id);
+	products.push(element.id);
 }
 
 const cartItem = document.querySelector(".cart__item");
 const cartItemImg = document.querySelector(".cart__item__img img");
 
 function appendContent(product) {
-    cartItem.dataset.id = product.id;
-    cartItem.dataset.color = product.color;
-    // const imageUrl = findProductInApi(apiInfos).imageUrl;
-    // cartItemImg.setAttribute("src", getImageUrl(product));
+	cartItem.dataset.id = product.id;
+	cartItem.dataset.color = product.color;
+	// const imageUrl = findProductInApi(apiInfos).imageUrl;
+	// cartItemImg.setAttribute("src", getImageUrl(product));
 
-    cartItems.appendChild(cartItem.cloneNode(true));
+	cartItems.appendChild(cartItem.cloneNode(true));
 }
 
 // Cette fonction supprime le premier article (élément exemple). (utilisable aussi quand le panier est vide)
 function deleteExample() {
-    cartItems.removeChild(document.getElementsByTagName("article")[0]);
+	cartItems.removeChild(document.getElementsByTagName("article")[0]);
 }
 
 // Cette fonction retourne le json du produit du produit trouvé dans le panier grâce à son id.
 function findProductInApi(api) {
-    const found = api.find((product) => product._id === cartItem.dataset.id);
-    return found;
+	const found = api.find((product) => product._id === cartItem.dataset.id);
+	return found;
 }
 
 // Commit cart.js pardon
 
 function getImageUrl(api) {
-    const imageUrl = findProductInApi(api).imageUrl;
-    cartItemImg.setAttribute("src", imageUrl);
-    return imageUrl;
+	const imageUrl = findProductInApi(api).imageUrl;
+	cartItemImg.setAttribute("src", imageUrl);
+	return imageUrl;
 }
 
 // function findProductInfosInApi(api) {}
@@ -140,86 +140,86 @@ function getImageUrl(api) {
 // récupérer les autres informations à afficher grâce à cet ID dans l'API.
 
 fetch(apiUrl)
-    .then((res) => res.json())
-    .then((apiInfos) => {
-        console.log("API Infos :");
-        console.log(apiInfos);
-        // const imageUrl = findProductInApi(apiInfos).imageUrl;
+	.then((res) => res.json())
+	.then((apiInfos) => {
+		console.log("API Infos :");
+		console.log(apiInfos);
+		// const imageUrl = findProductInApi(apiInfos).imageUrl;
 
-        for (const productsInCart of cart) {
-            appendContent(productsInCart);
-            console.log("findProductInApi :");
-            console.log(findProductInApi(apiInfos));
-            console.log("--------------------------------");
+		for (const productsInCart of cart) {
+			appendContent(productsInCart);
+			console.log("findProductInApi :");
+			console.log(findProductInApi(apiInfos));
+			console.log("--------------------------------");
 
-            // cartItemImg.setAttribute("src", getImageUrl(apiInfos));
-            console.log("imageUrl : ");
-            console.log(getImageUrl(apiInfos));
-            console.log("--------------------------------");
-        }
+			// cartItemImg.setAttribute("src", getImageUrl(apiInfos));
+			console.log("imageUrl : ");
+			console.log(getImageUrl(apiInfos));
+			console.log("--------------------------------");
+		}
 
-        deleteExample();
+		deleteExample();
 
-        // cloneArticle();
+		// cloneArticle();
 
-        // Permet d'afficher tous les produits du panier sur la page panier
-        // Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
-        function displayProductsFromCart() {
-            // On crée une boucle qui itère sur chaque produit dans le panier ("cart").
-            for (let i in cart) {
-                const eachArticle = cartItems.children[i];
-                const eachArticleId = cart[i].id;
+		// Permet d'afficher tous les produits du panier sur la page panier
+		// Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
+		function displayProductsFromCart() {
+			// On crée une boucle qui itère sur chaque produit dans le panier ("cart").
+			for (let i in cart) {
+				const eachArticle = cartItems.children[i];
+				const eachArticleId = cart[i].id;
 
-                function productFound() {
-                    const result = apiInfos.find(
-                        (product) => product._id === eachArticleId
-                    );
-                    return result;
-                }
+				function productFound() {
+					const result = apiInfos.find(
+						(product) => product._id === eachArticleId
+					);
+					return result;
+				}
 
-                function productFoundIndex() {
-                    return apiInfos.indexOf(productFound());
-                }
+				function productFoundIndex() {
+					return apiInfos.indexOf(productFound());
+				}
 
-                const apiProduct = apiInfos[productFoundIndex()];
+				const apiProduct = apiInfos[productFoundIndex()];
 
-                eachArticle
-                    .querySelector(".cart__item__img img")
-                    .setAttribute("src", apiProduct.imageUrl);
-                eachArticle.querySelector(
-                    ".cart__item__content__description h2"
-                ).innerText = apiProduct.name;
-                eachArticle.querySelector(
-                    ".cart__item__content__description p"
-                ).innerText = translateColors()[i].color;
-                const eachArticlePrice = eachArticle.querySelector(
-                    ".cart__item__content__description p:nth-of-type(2)"
-                );
-                eachArticlePrice.innerText = apiProduct.price + ",00 €";
-                eachArticlePrice.classList.add("cart__item__price");
-                eachArticlePrice.dataset.price = apiProduct.price;
-                eachArticle.querySelector(".itemQuantity").value =
-                    cart[i].quantity;
+				eachArticle
+					.querySelector(".cart__item__img img")
+					.setAttribute("src", apiProduct.imageUrl);
+				eachArticle.querySelector(
+					".cart__item__content__description h2"
+				).innerText = apiProduct.name;
+				eachArticle.querySelector(
+					".cart__item__content__description p"
+				).innerText = translateColors()[i].color;
+				const eachArticlePrice = eachArticle.querySelector(
+					".cart__item__content__description p:nth-of-type(2)"
+				);
+				eachArticlePrice.innerText = apiProduct.price + ",00 €";
+				eachArticlePrice.classList.add("cart__item__price");
+				eachArticlePrice.dataset.price = apiProduct.price;
+				eachArticle.querySelector(".itemQuantity").value =
+					cart[i].quantity;
 
-                eachArticle.dataset.id = eachArticleId;
-                eachArticle.dataset.color = cart[i].color;
-            }
-        }
-        displayProductsFromCart();
+				eachArticle.dataset.id = eachArticleId;
+				eachArticle.dataset.color = cart[i].color;
+			}
+		}
+		displayProductsFromCart();
 
-        changeProductQuantity();
+		changeProductQuantity();
 
-        deleteProduct();
+		deleteProduct();
 
-        document.querySelector("#totalQuantity").innerText = cart.length;
+		document.querySelector("#totalQuantity").innerText = cart.length;
 
-        calculateTotalPrice();
+		calculateTotalPrice();
 
-        validateFormInfos();
-    })
-    .catch((err) =>
-        console.log("Erreur lors de la récupération des données de l'API", err)
-    );
+		validateFormInfos();
+	})
+	.catch((err) =>
+		console.log("Erreur lors de la récupération des données de l'API", err)
+	);
 
 // // Cette fonction sert à dupliquer le front de l'objet dans le panier pour afficher plusieurs objets dans le panier.
 // function cloneArticle() {
@@ -243,84 +243,84 @@ fetch(apiUrl)
 
 // Cette fonction sert à mettre à jour la quantité d'un produit
 function changeProductQuantity() {
-    const productQuantity = document.querySelectorAll(".itemQuantity");
+	const productQuantity = document.querySelectorAll(".itemQuantity");
 
-    productQuantity.forEach((product) =>
-        product.addEventListener("change", function () {
-            const productId = this.closest("article").dataset.id;
-            const productColor = this.closest("article").dataset.color;
+	productQuantity.forEach((product) =>
+		product.addEventListener("change", function () {
+			const productId = this.closest("article").dataset.id;
+			const productColor = this.closest("article").dataset.color;
 
-            function productFoundIndex() {
-                const result = cart.find(
-                    (product) =>
-                        product.id === productId &&
-                        product.color === productColor
-                );
-                return cart.indexOf(result);
-            }
+			function productFoundIndex() {
+				const result = cart.find(
+					(product) =>
+						product.id === productId &&
+						product.color === productColor
+				);
+				return cart.indexOf(result);
+			}
 
-            if (this.value <= 100) {
-                cart[productFoundIndex()].quantity = this.value;
-            } else {
-                alert("Le panier est limité à 100 produits identiques");
-            }
+			if (this.value <= 100) {
+				cart[productFoundIndex()].quantity = this.value;
+			} else {
+				alert("Le panier est limité à 100 produits identiques");
+			}
 
-            console.log("Cart quantity changed : ");
-            console.log(cart);
-            localStorage.setItem("Cart", JSON.stringify(cart));
+			console.log("Cart quantity changed : ");
+			console.log(cart);
+			localStorage.setItem("Cart", JSON.stringify(cart));
 
-            calculateTotalPrice();
-        })
-    );
+			calculateTotalPrice();
+		})
+	);
 }
 
 // On peut peut-être extraire la fonction productFoundIndex des fonctions deleteProduct et changeProductQuantity,
 // mais les constantes productId et productcolor n'ont l'air de fonctionner qu'à l'intérieur de ces fonctions.
 // Cette fonction permet de supprimer un produit du panier
 function deleteProduct() {
-    const deleteButtons = document.querySelectorAll(".deleteItem");
+	const deleteButtons = document.querySelectorAll(".deleteItem");
 
-    deleteButtons.forEach((button) =>
-        button.addEventListener("click", function () {
-            const deleteConfirm = confirm("Supprimer l'élément ?");
-            if (deleteConfirm) {
-                const productId = this.closest("article").dataset.id;
-                const productColor = this.closest("article").dataset.color;
+	deleteButtons.forEach((button) =>
+		button.addEventListener("click", function () {
+			const deleteConfirm = confirm("Supprimer l'élément ?");
+			if (deleteConfirm) {
+				const productId = this.closest("article").dataset.id;
+				const productColor = this.closest("article").dataset.color;
 
-                function productFoundIndex() {
-                    const result = cart.find(
-                        (product) =>
-                            product.id === productId &&
-                            product.color === productColor
-                    );
-                    return cart.indexOf(result);
-                }
+				function productFoundIndex() {
+					const result = cart.find(
+						(product) =>
+							product.id === productId &&
+							product.color === productColor
+					);
+					return cart.indexOf(result);
+				}
 
-                cart.splice(productFoundIndex(), 1);
-                localStorage.setItem("Cart", JSON.stringify(cart));
-                document.location.reload();
-            }
-        })
-    );
+				cart.splice(productFoundIndex(), 1);
+				localStorage.setItem("Cart", JSON.stringify(cart));
+				document.location.reload();
+			}
+		})
+	);
 }
 
 // Cette fonction calcul le prix total des articles dans le panier
 function calculateTotalPrice() {
-    const articlesPrices = document.querySelectorAll(".cart__item__price");
+	const articlesPrices = document.querySelectorAll(".cart__item__price");
 
-    let totalPriceAddition = 0;
-    let productQuantityAddition = 0;
+	let totalPriceAddition = 0;
+	let productQuantityAddition = 0;
 
-    for (let i = 0; i < articlesPrices.length; i++) {
-        const productQuantity = cart[i].quantity;
+	for (let i = 0; i < articlesPrices.length; i++) {
+		const productQuantity = cart[i].quantity;
 
-        totalPriceAddition +=
-            productQuantity * parseInt(articlesPrices[i].dataset.price);
-        productQuantityAddition += parseInt(productQuantity);
-    }
+		totalPriceAddition +=
+			productQuantity * parseInt(articlesPrices[i].dataset.price);
+		productQuantityAddition += parseInt(productQuantity);
+	}
 
-    totalPrice.innerText = totalPriceAddition + ",00";
-    totalQuantity.innerText = productQuantityAddition;
+	totalPrice.innerText = totalPriceAddition + ",00";
+	totalQuantity.innerText = productQuantityAddition;
 }
 
 /* Cette fonction permet de vérifier que les informations entrée par l'utilisateur ont un format correct,
@@ -328,106 +328,113 @@ d'afficher des messages d'erreur si ce n'est pas le cas,
 et d'envoyer les données à l'API puis d'être redirigé vers la page confirmation.
 */
 function validateFormInfos() {
-    orderButton.addEventListener("click", function (e) {
-        e.preventDefault();
+	orderButton.addEventListener("click", function (e) {
+		e.preventDefault();
+		let cartLocalStorage = localStorage.getItem("Cart");
 
-        const contact = {
-            firstName: firstNameInput.value,
-            lastName: lastNameInput.value,
-            address: addressInput.value,
-            city: cityInput.value,
-            email: emailInput.value,
-        };
+		if (
+			localStorage.getItem("Cart") === null ||
+			cartLocalStorage.length < 3 // Un tableau vide ne fait que 2 caractères
+		) {
+			alert("Votre panier est vide !");
+		} else {
+			const contact = {
+				firstName: firstNameInput.value,
+				lastName: lastNameInput.value,
+				address: addressInput.value,
+				city: cityInput.value,
+				email: emailInput.value,
+			};
 
-        console.log(" contact  : ");
-        console.log(contact);
+			// Tests grâce aux regex
+			const testFirstName = regexFirstName.test(firstNameInput.value);
+			const testLastName = regexLastName.test(lastNameInput.value);
+			const testAddress = regexAddress.test(addressInput.value);
+			const testCity = regexCity.test(cityInput.value);
+			const testEmail = regexEmail.test(emailInput.value);
 
-        // Tests grâce aux regex
-        const testFirstName = regexFirstName.test(firstNameInput.value);
-        const testLastName = regexLastName.test(lastNameInput.value);
-        const testAddress = regexAddress.test(addressInput.value);
-        const testCity = regexCity.test(cityInput.value);
-        const testEmail = regexEmail.test(emailInput.value);
+			if (testFirstName) {
+				firstNameInput.value =
+					firstNameInput.value.charAt(0).toUpperCase() +
+					firstNameInput.value.slice(1);
+				firstNameErrorMsg.style.display = "none";
+			} else {
+				firstNameErrorMsg.style.display = "inline";
+			}
 
-        if (testFirstName) {
-            firstNameInput.value =
-                firstNameInput.value.charAt(0).toUpperCase() +
-                firstNameInput.value.slice(1);
-            firstNameErrorMsg.style.display = "none";
-        } else {
-            firstNameErrorMsg.style.display = "inline";
-        }
+			if (testLastName) {
+				lastNameErrorMsg.style.display = "none";
+				lastNameInput.value =
+					lastNameInput.value.charAt(0).toUpperCase() +
+					lastNameInput.value.slice(1);
+			} else {
+				lastNameErrorMsg.style.display = "inline";
+			}
 
-        if (testLastName) {
-            lastNameErrorMsg.style.display = "none";
-            lastNameInput.value =
-                lastNameInput.value.charAt(0).toUpperCase() +
-                lastNameInput.value.slice(1);
-        } else {
-            lastNameErrorMsg.style.display = "inline";
-        }
+			if (testAddress) {
+				addressErrorMsg.style.display = "none";
+			} else {
+				addressErrorMsg.style.display = "inline";
+			}
 
-        if (testAddress) {
-            addressErrorMsg.style.display = "none";
-        } else {
-            addressErrorMsg.style.display = "inline";
-        }
+			if (testCity) {
+				cityInput.value =
+					cityInput.value.charAt(0).toUpperCase() +
+					cityInput.value.slice(1);
+				cityErrorMsg.style.display = "none";
+			} else {
+				cityErrorMsg.style.display = "inline";
+			}
 
-        if (testCity) {
-            cityInput.value =
-                cityInput.value.charAt(0).toUpperCase() +
-                cityInput.value.slice(1);
-            cityErrorMsg.style.display = "none";
-        } else {
-            cityErrorMsg.style.display = "inline";
-        }
+			if (testEmail) {
+				emailInput.value = emailInput.value.toLowerCase();
+				emailErrorMsg.style.display = "none";
+			} else {
+				emailErrorMsg.style.display = "inline";
+			}
 
-        if (testEmail) {
-            emailInput.value = emailInput.value.toLowerCase();
-            emailErrorMsg.style.display = "none";
-        } else {
-            emailErrorMsg.style.display = "inline";
-        }
+			if (
+				testFirstName &&
+				testLastName &&
+				testAddress &&
+				testCity &&
+				testEmail &&
+				localStorage.getItem("Cart") !== null &&
+				localStorage.getItem("Cart") !== []
+			) {
+				localStorage.setItem("Contact", JSON.stringify(contact));
 
-        if (
-            testFirstName &&
-            testLastName &&
-            testAddress &&
-            testCity &&
-            testEmail
-        ) {
-            localStorage.setItem("Contact", JSON.stringify(contact));
+				// Il faut que products soit un array
+				const postData = {
+					contact,
+					products,
+				};
 
-            // Il faut que products soit un array
-            const postData = {
-                contact,
-                products,
-            };
+				console.log("postData : ---> ");
+				console.log(postData);
 
-            console.log("postData : ---> ");
-            console.log(postData);
-
-            // On envoie les données sous le format requis dans une requête POST à l'API
-            fetch("http://localhost:3000/api/products/order", {
-                method: "POST",
-                headers: {
-                    "Access-Control-Allow-Headers":
-                        "Origin, Content, Accept, Content-Type, Authorization, X-Requested-With, Access-Control-Allow-Methods",
-                    "Access-Control-Allow-Methods":
-                        "DELETE, POST, GET, OPTIONS, PATCH, PUT",
-                    "Access-Control-Allow-Origin": "*",
-                    // Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(postData),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    document.location.href =
-                        "confirmation.html?id=" + data.orderId;
-                });
-        }
-    });
+				// On envoie les données sous le format requis dans une requête POST à l'API
+				fetch("http://localhost:3000/api/products/order", {
+					method: "POST",
+					headers: {
+						"Access-Control-Allow-Headers":
+							"Origin, Content, Accept, Content-Type, Authorization, X-Requested-With, Access-Control-Allow-Methods",
+						"Access-Control-Allow-Methods":
+							"DELETE, POST, GET, OPTIONS, PATCH, PUT",
+						"Access-Control-Allow-Origin": "*",
+						// Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(postData),
+				})
+					.then((res) => res.json())
+					.then((data) => {
+						document.location.href =
+							"confirmation.html?id=" + data.orderId;
+					});
+			}
+		}
+	});
 }
 
 /*
