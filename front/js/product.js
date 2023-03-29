@@ -13,14 +13,20 @@ function saveProductsInLocalStorage() {
 			.then((products) => {
 				const jsonProducts = JSON.stringify(products);
 				window.localStorage.setItem("products", jsonProducts);
-				products = JSON.parse(products);
-
+				products = JSON.parse(jsonProducts);
 				//productExistVerification();
+			})
+			.then(() => {
+				location.reload();
 			});
 	} else {
 		products = JSON.parse(products);
 	}
 }
+
+// if (localStorage.getItem("products") === undefined) {
+// 	location.reload();
+// }
 
 // On récupère tous les éléments nécessaires dans des constantes.
 const productImg = document.querySelector(".item__img img");
@@ -48,8 +54,9 @@ function productExistVerification() {
 
 // Cette fonction ajoute toutes les informations du produit affiché sur la page.
 function appendContent(item) {
-	productExistVerification();
 	// On vérifie si l'id dans l'URL de la page correspond à l'id d'un produit existant.
+	productExistVerification();
+
 	productImg.setAttribute("src", item.imageUrl);
 	productTitle.innerText = item.name;
 	productPrice.innerText = item.price;
@@ -115,7 +122,7 @@ if (localStorage.getItem("Cart") != null) {
 function currentProduct() {
 	const jsonProduct = {
 		id: productIdFromUrl,
-		quantity: productQuantity.value,
+		quantity: parseInt(productQuantity.value),
 		color: productColors.value,
 	};
 
@@ -164,10 +171,15 @@ document.getElementById("addToCart").addEventListener("click", function () {
 
 		// Si le produit choisi est déjà dans la panier, on ajoute la quantité sélectionnée.
 	} else if (productIsInCart()) {
-		console.log("Index du produit : " + productIndexInCart());
 		cart[productIndexInCart()].quantity =
 			parseInt(cart[productIndexInCart()].quantity) +
 			parseInt(productQuantity.value);
+
+		if (cart[productIndexInCart()].quantity <= 100) {
+			localStorage.setItem("Cart", JSON.stringify(cart));
+			alert("La quantité de cet article a bien été mise à jour !");
+			console.log(cart);
+		}
 
 		// On annule l'ajout si la quantité obtenue devient supérieure à 100 articles identiques.
 		if (cart[productIndexInCart()].quantity > 100) {
@@ -181,18 +193,19 @@ document.getElementById("addToCart").addEventListener("click", function () {
 	} else {
 		if (productQuantity.value <= 100) {
 			cart.push(currentProduct());
+			// On sauvegarde le panier dans localStorage.
+			localStorage.setItem("Cart", JSON.stringify(cart));
+			alert("Votre sélection a bien été ajoutée au panier !");
 		} else {
 			alert("Le panier est limité à 100 produits identiques");
 		}
 	}
 
 	if (
-		productQuantity.value > 0 &&
+		productQuantity.value >= 1 &&
 		productQuantity.value <= 100 &&
-		cart[productIndexInCart()].quantity > 100
+		!productIsInCart()
 	) {
-		// On sauvegarde le panier dans localStorage.
-		localStorage.setItem("Cart", JSON.stringify(cart));
-		alert("Votre sélection a bien été ajoutée au panier !");
+		console.log(cart);
 	}
 });

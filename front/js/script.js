@@ -1,9 +1,10 @@
-// script.js correspond à la page d'accueil, index.html
+// script.js correspond à la page d'accueil. (index.html)
 
 const apiUrl = "http://localhost:3000/api/products";
 
 // Récupération de la liste des produits depuis le localStorage
 let products = window.localStorage.getItem("products");
+
 // si les produits ne sont pas dans localStorage, on les y enregistre depuis l'api
 if (products === null) {
 	fetch(apiUrl)
@@ -11,7 +12,7 @@ if (products === null) {
 		.then((products) => {
 			const jsonProducts = JSON.stringify(products);
 			window.localStorage.setItem("products", jsonProducts);
-			products = JSON.parse(products);
+			products = JSON.parse(jsonProducts);
 
 			//productExistVerification();
 		});

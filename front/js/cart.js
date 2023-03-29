@@ -1,3 +1,5 @@
+// cart.js correspond à la page panier.
+
 // On récupère les données du panier depuis localStorage
 let cart = [];
 if (localStorage.getItem("Cart") != null) {
@@ -160,8 +162,6 @@ fetch(apiUrl)
 
 		deleteExample();
 
-		// cloneArticle();
-
 		// Permet d'afficher tous les produits du panier sur la page panier
 		// Je ne sais pas comment extraire cette fonction du fetch (impossible ?) car si je le fais et que je l'appelle, les produits ne s'affichent pas.
 		function displayProductsFromCart() {
@@ -221,26 +221,6 @@ fetch(apiUrl)
 		console.log("Erreur lors de la récupération des données de l'API", err)
 	);
 
-// // Cette fonction sert à dupliquer le front de l'objet dans le panier pour afficher plusieurs objets dans le panier.
-// function cloneArticle() {
-//     for (let i in cart) {
-//         // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
-
-//         if (i > 0) {
-//             const productInCartItem = cartItems.children[0];
-//             const cloneArticle = productInCartItem.cloneNode(true);
-//             cartItems.appendChild(cloneArticle);
-//         }
-//     }
-
-//     if (cart.length < 1) {
-//         const emptyCartItem = cartItems.children[0];
-//         emptyCartItem.remove();
-//         let createP = cartItems.appendChild(document.createElement("p"));
-//         createP.textContent = "Votre panier est vide !";
-//     }
-// }
-
 // Cette fonction sert à mettre à jour la quantité d'un produit
 function changeProductQuantity() {
 	const productQuantity = document.querySelectorAll(".itemQuantity");
@@ -259,10 +239,12 @@ function changeProductQuantity() {
 				return cart.indexOf(result);
 			}
 
-			if (this.value <= 100) {
+			if (this.value <= 100 && this.value >= 1) {
 				cart[productFoundIndex()].quantity = this.value;
-			} else {
+			} else if (this.value > 100) {
 				alert("Le panier est limité à 100 produits identiques");
+			} else {
+				alert("Veuillez entrer un nombre valide d'article(s)");
 			}
 
 			console.log("Cart quantity changed : ");
@@ -437,7 +419,27 @@ function validateFormInfos() {
 	});
 }
 
-/*
+// OLD Cette fonction sert à dupliquer le front de l'objet dans le panier pour afficher plusieurs objets dans le panier.
+// function cloneArticle() {
+//     for (let i in cart) {
+//         // console.log("Produit n°" + parseInt(parseInt([i]) + 1) + " dans le panier : " + JSON.stringify(cart[i]))
+
+//         if (i > 0) {
+//             const productInCartItem = cartItems.children[0];
+//             const cloneArticle = productInCartItem.cloneNode(true);
+//             cartItems.appendChild(cloneArticle);
+//         }
+//     }
+
+//     if (cart.length < 1) {
+//         const emptyCartItem = cartItems.children[0];
+//         emptyCartItem.remove();
+//         let createP = cartItems.appendChild(document.createElement("p"));
+//         createP.textContent = "Votre panier est vide !";
+//     }
+// }
+
+/* OLD
 function validateFormInfosOld() {
     
     // FIRST NAME TEST
