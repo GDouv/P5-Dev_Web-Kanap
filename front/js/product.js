@@ -5,11 +5,12 @@ const apiUrl = "http://localhost:3000/api/products";
 // Récupération de la liste des produits depuis le localStorage
 let products = window.localStorage.getItem("products");
 
+// Si les produits ne sont pas dans localStorage, cette fonction les y enregistre depuis l'API.
 function saveProductsInLocalStorage() {
-	// si les produits ne sont pas dans localStorage, on les y enregistre depuis l'api
 	if (products === null) {
 		fetch(apiUrl)
 			.then((res) => res.json())
+			// Le tableau products contient tous les produits et leurs données issus de l'API.
 			.then((products) => {
 				const jsonProducts = JSON.stringify(products);
 				window.localStorage.setItem("products", jsonProducts);

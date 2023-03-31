@@ -5,25 +5,30 @@ const apiUrl = "http://localhost:3000/api/products";
 // Récupération de la liste des produits depuis le localStorage
 let products = window.localStorage.getItem("products");
 
-// Si les produits ne sont pas dans localStorage, on les y enregistre depuis l'API.
-if (products === null) {
-	fetch(apiUrl)
-		.then((res) => res.json())
-		// Le tableau products contient tous les produits et leurs données issus de l'API.
-		.then((products) => {
-			const jsonProducts = JSON.stringify(products);
-			window.localStorage.setItem("products", jsonProducts);
-			products = JSON.parse(jsonProducts);
-		})
-		.catch((error) =>
+// Si les produits ne sont pas dans localStorage, cette fonction les y enregistre depuis l'API.
+async function saveProductsInLocalStorage() {
+	if (products === null) {
+		try {
+			const response = await fetch(apiUrl);
+			// Le tableau jsonProducts contient tous les produits et leurs données issus de l'API.
+			const jsonProducts = await response.json();
+			window.localStorage.setItem(
+				"products",
+				JSON.stringify(jsonProducts)
+			);
+			products = jsonProducts;
+		} catch (error) {
 			console.error(
 				"Erreur lors de l'enregistrement des produits dans localStorage",
 				error
-			)
-		);
-} else {
-	products = JSON.parse(products);
+			);
+		}
+	} else {
+		products = JSON.parse(products);
+	}
 }
+
+saveProductsInLocalStorage();
 
 // Cette fonction ajoute un produit avec ses éléments de contenu sur la page d'accueil.
 function appendContent(product) {
@@ -59,16 +64,19 @@ function appendContent(product) {
 }
 
 // Affichage sur la page d'accueil des données de tous les produits issus de l'API.
-fetch(apiUrl)
-	.then((res) => res.json())
-	// Le tableau products contient tous les produits et leurs données issus de l'API.
-	.then((products) => {
+async function displayProducts() {
+	try {
+		const response = await fetch(apiUrl);
+		// Le tableau jsonProducts contient tous les produits et leurs données issus de l'API.
+		const jsonProducts = await response.json();
 		/* On crée une boucle d'une longueur du tableau products qui créera tous les éléments du DOM
         pour tous les produits en récupérant dans products les valeurs à ajouter à chaque élément. */
-		for (const product of products) {
+		for (const product of jsonProducts) {
 			appendContent(product);
 		}
-	})
-	.catch((error) =>
-		console.error("Erreur lors de l'affichage des produits", error)
-	);
+	} catch (error) {
+		console.error("Erreur lors de l'affichage des produits", error);
+	}
+}
+
+displayProducts();
