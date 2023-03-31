@@ -27,7 +27,6 @@ async function saveProductsInLocalStorage() {
 		products = JSON.parse(products);
 	}
 }
-
 saveProductsInLocalStorage();
 
 // Cette fonction ajoute un produit avec ses éléments de contenu sur la page d'accueil.
@@ -78,5 +77,4 @@ async function displayProducts() {
 		console.error("Erreur lors de l'affichage des produits", error);
 	}
 }
-
 displayProducts();
