@@ -41,8 +41,8 @@ const productQuantity = document.getElementById("quantity");
 
 // On récupère dans l'URL l'id du produit actuellement affiché sur la page.
 const pageHref = new URL(document.location.href);
-const search_params = new URLSearchParams(pageHref.search);
-const productIdFromUrl = search_params.get("id");
+const searchParamsPageHref = new URLSearchParams(pageHref.search);
+const productIdFromUrl = searchParamsPageHref.get("id");
 
 // Cette fonction vérifie si l'id affiché dans l'URL correspond à celui d'un produit existant.
 function productExistVerification() {
@@ -149,12 +149,6 @@ function findProductInCart() {
 	return result;
 }
 
-/* Cette fonction retourne l'index dans le panier du produit
-trouvé par la fonction "findProductInCart". */
-function productIndexInCart() {
-	return cart.indexOf(findProductInCart());
-}
-
 /* Cette fonction vérifie si ce produit est déjà dans le panier ou pas,
 retourne true ou false. */
 function productIsInCart() {
@@ -163,6 +157,12 @@ function productIsInCart() {
 		inCart = true;
 	}
 	return inCart;
+}
+
+/* Cette fonction retourne l'index dans le panier du produit
+trouvé par la fonction "findProductInCart". */
+function productIndexInCart() {
+	return cart.indexOf(findProductInCart());
 }
 
 /* On ajoute le produit sélectionné au panier (ou on met à jour la quantité si 
@@ -184,23 +184,22 @@ document.getElementById("addToCart").addEventListener("click", function () {
 			parseInt(cart[productIndexInCart()].quantity) +
 			parseInt(productQuantity.value);
 
+		/* Si la quantité obtenue est de 100 au maximumu, on l'ajoute au localStorage,
+		sinon, on annule l'ajout. */
 		if (cart[productIndexInCart()].quantity <= 100) {
 			localStorage.setItem("Cart", JSON.stringify(cart));
 			alert("La quantité de cet article a bien été mise à jour !");
-		}
-
-		// On annule l'ajout si la quantité obtenue devient supérieure à 100 articles identiques.
-		if (cart[productIndexInCart()].quantity > 100) {
+		} else {
 			cart[productIndexInCart()].quantity =
 				parseInt(cart[productIndexInCart()].quantity) -
 				parseInt(productQuantity.value);
-			// On remet le contenu du panier dans localStorage s'il avait été supprimé
+			// On remet le contenu du panier dans localStorage s'il avait été supprimé.
 			localStorage.setItem("Cart", JSON.stringify(cart));
 			alert("Le panier est limité à 100 produits identiques !");
 		}
 
 		/* On ajoute le produit au panier s'il n'y était pas déjà, tout en vérifiant si
-		la quantité ne dépasse pas la limite de 100 articles identiques. */
+	la quantité ne dépasse pas la limite de 100 articles identiques. */
 	} else {
 		if (productQuantity.value <= 100) {
 			cart.push(currentProduct());
