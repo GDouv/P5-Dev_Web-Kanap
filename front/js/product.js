@@ -100,6 +100,8 @@ function addColorsInColorsSelect(product) {
 	document.querySelector("#colors option").innerText = chooseColorText;
 }
 
+/* Cette fonction appelle les fonctions précédemment créées en passant en paramètre
+de ces fonctions, si nécessaire, les infos du produit actuellement affiché. */
 async function callFunctionsOnCurrentProduct() {
 	try {
 		const response = await fetch(apiUrl + "/" + productIdFromUrl);
