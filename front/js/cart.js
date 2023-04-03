@@ -1,6 +1,6 @@
 // cart.js correspond à la page panier.
 
-// On récupère les données du panier depuis localStorage
+// On récupère les données du panier depuis localStorage.
 let cart = [];
 if (localStorage.getItem("Cart") != null) {
 	cart = JSON.parse(localStorage.getItem("Cart"));
@@ -50,9 +50,6 @@ function translateColors() {
 	);
 	return cartFrenchColors;
 }
-console.log("Cart (translated colors) :");
-console.log(translateColors());
-console.log("--------------------------------");
 
 const apiUrl = "http://localhost:3000/api/products";
 
@@ -69,16 +66,14 @@ const addressInput = document.getElementById("address");
 const cityInput = document.getElementById("city");
 const emailInput = document.getElementById("email");
 
-// Regex
-const regexFirstName =
-	/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,47}$/u;
-const regexLastName =
-	/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçœčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{1,47}$/u;
-const regexAddress = /^[a-zA-Z0-9àâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{3,}$/u;
-const regexCity = /^[a-zA-ZàâäèéêëîïôöûüÿçœÀÂÄÈÉÊËÎÏÔÖÛÜŸÇŒ ,'-]{1,}$/u;
-const regexEmail = /^[a-zA-Z0-9\.-]+@{1}([a-zA-Z0-9-]+\.)+[a-zA-Z0-9-]{2,4}$/u;
+// Regex pour les champs du formulaire
+const regexFirstName = /^[\p{L} '-]{2,30}$/u;
+const regexLastName = /^[\p{L} '-]{1,30}$/u;
+const regexAddress = /^[\p{L}0-9 ,'-]{3,}$/u;
+const regexCity = /^[\p{L} ,'-]{1,}$/u;
+const regexEmail = /^[a-zA-Z0-9_\.-]+@{1}([a-zA-Z0-9-]+\.)+[a-zA-Z0-9-]{2,4}$/u;
 
-// Messages d'erreur setup
+// Messages d'erreur pour les champs du formulaire
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
 firstNameErrorMsg.innerText = "Veuillez saisir votre prénom";
 firstNameErrorMsg.style.display = "none";
