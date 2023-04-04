@@ -160,7 +160,7 @@ document.getElementById("addToCart").addEventListener("click", function () {
 			parseInt(cart[productIndexInCart()].quantity) +
 			parseInt(productQuantity.value);
 
-		/* Si la quantité obtenue est de 100 au maximumu, on l'ajoute au localStorage,
+		/* Si la quantité obtenue est de 100 au maximum, on l'ajoute au localStorage,
 		sinon, on annule l'ajout. */
 		if (cart[productIndexInCart()].quantity <= 100) {
 			localStorage.setItem("Cart", JSON.stringify(cart));
