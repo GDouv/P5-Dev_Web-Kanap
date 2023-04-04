@@ -329,7 +329,6 @@ async function sendOrderInfos(postData, contact) {
 		const formValidationConfirm = confirm(
 			`\nValider la commande de ${totalQuantity.innerText} articles pour un total de ${totalPrice.innerText} € ?\n\nPrénom: ${contact.firstName}\nNom: ${contact.lastName}\nAdresse: ${contact.address}\nVille: ${contact.city}\nEmail: ${contact.email}`
 		);
-		console.log(products);
 		if (formValidationConfirm) {
 			document.location.href = "confirmation.html?id=" + data.orderId;
 		}
