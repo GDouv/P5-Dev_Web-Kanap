@@ -1,16 +1,16 @@
 /* confirmation.js correspond à la page de confirmation sur laquelle on est 
 redirigé après avoir validé le formulaire de commande. */
 
-const id = new URL(window.location.href).searchParams.get("id");
+/* On vide le localStorage pour avoir de nouveau un panier vide
+et ne pas stocker en local les informations de l'utilisateur. */
+localStorage.clear();
 
-const orderId = document.getElementById("orderId");
+document.getElementById("orderId").innerHTML = new URL(
+	window.location.href
+).searchParams.get("id");
 
-orderId.innerHTML = id;
+const thanks = document.createElement("p");
 
-let thanks = document.createElement("p");
-
-thanks.textContent = "Kanap vous remercie pour votre commande !";
+thanks.innerText = "Kanap vous remercie pour votre commande !";
 
 document.querySelector(".confirmation p").appendChild(thanks);
-
-localStorage.clear();

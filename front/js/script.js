@@ -2,37 +2,11 @@
 
 const apiUrl = "http://localhost:3000/api/products";
 
-// Récupération de la liste des produits depuis le localStorage
-let products = window.localStorage.getItem("products");
-
-// Si les produits ne sont pas dans localStorage, cette fonction les y enregistre depuis l'API.
-async function saveProductsInLocalStorage() {
-	if (products === null) {
-		try {
-			const response = await fetch(apiUrl);
-			// Le tableau jsonProducts contient tous les produits et leurs données issus de l'API.
-			const jsonProducts = await response.json();
-			window.localStorage.setItem(
-				"products",
-				JSON.stringify(jsonProducts)
-			);
-			products = jsonProducts;
-		} catch (error) {
-			console.error(
-				"Erreur lors de l'enregistrement des produits dans localStorage",
-				error
-			);
-		}
-	} else {
-		products = JSON.parse(products);
-	}
-}
-saveProductsInLocalStorage();
+const items = document.getElementById("items");
 
 // Cette fonction ajoute un produit avec ses éléments de contenu sur la page d'accueil.
 function appendContent(product) {
 	// On crée tous les éléments HTML nécessaires pour afficher la fiche d'un produit.
-	const items = document.getElementById("items");
 	const createLink = document.createElement("a");
 	const createArticle = document.createElement("article");
 	const createImg = document.createElement("img");

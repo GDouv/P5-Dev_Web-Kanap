@@ -2,34 +2,16 @@
 
 const apiUrl = "http://localhost:3000/api/products";
 
-// Récupération de la liste des produits depuis le localStorage
-let products = window.localStorage.getItem("products");
+// Déclaration d'une variable pour récupérer la liste des produits depuis l'API.
+let products = "";
 
-// Si les produits ne sont pas dans localStorage, cette fonction les y enregistre depuis l'API.
-async function saveProductsInLocalStorage() {
-	if (products === null) {
-		try {
-			const response = await fetch(apiUrl);
-			// Le tableau jsonProducts contient tous les produits et leurs données issus de l'API.
-			const jsonProducts = await response.json();
-			window.localStorage.setItem(
-				"products",
-				JSON.stringify(jsonProducts)
-			);
-			products = jsonProducts;
-			/* On recharge la page pour bien afficher le produit
-			s'il n'était pas dans localStorage à la base */
-			location.reload();
-		} catch (error) {
-			console.error(
-				"Erreur lors de l'enregistrement des produits dans localStorage",
-				error
-			);
-		}
-	} else {
-		products = JSON.parse(products);
-	}
+// Cette fonction enregistre la liste des produits dans la variable "products".
+async function getProducts() {
+	const response = await fetch(apiUrl);
+	const jsonProducts = await response.json();
+	products = jsonProducts;
 }
+getProducts();
 
 // On récupère dans des constantes tous les éléments nécessaires pour l'affichage du produit.
 const productImg = document.querySelector(".item__img img");
@@ -70,9 +52,6 @@ function appendContent(item) {
 
 // Cette fonction ajoute les couleurs dans le menu déroulant.
 function addColorsInColorsSelect(product) {
-	// On récupère déjà le message "--SVP, choisissez un couleur --" de la première balise option.
-	const chooseColorText = document.querySelector("#colors option").innerText;
-
 	/* On boucle sur les couleurs du produit avec une boucle
 	de la longueur du tableau "product.colors". */
 	for (let i = 1; i <= product.colors.length; i++) {
@@ -95,23 +74,20 @@ function addColorsInColorsSelect(product) {
 			newOption.setAttribute("value", color.toLowerCase());
 		}
 	}
-
-	// On remet le message "--SVP, choisissez une couleur --" dans la première balise option.
-	document.querySelector("#colors option").innerText = chooseColorText;
 }
 
-/* Cette fonction appelle les fonctions précédemment créées en passant en paramètre
-de ces fonctions, si nécessaire, les infos du produit actuellement affiché. */
+/* Cette fonction appelle les fonctions précédemment créées en passant
+en paramètre de ces fonctions les infos du produit actuellement affiché. */
 async function callFunctionsOnCurrentProduct() {
 	try {
 		const response = await fetch(apiUrl + "/" + productIdFromUrl);
+
 		// currentProduct contient les information du produit dont l'id est dans l'URL.
 		const currentProduct = await response.json();
 
-		// On enrigistre les produits dans localStorage s'ils n'y sont pas.
-		saveProductsInLocalStorage();
 		// On entre les informations du produit dans la page.
 		appendContent(currentProduct);
+
 		// On ajoute le choix des couleurs dans le menu déroulant.
 		addColorsInColorsSelect(currentProduct);
 	} catch (error) {
