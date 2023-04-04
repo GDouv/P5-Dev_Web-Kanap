@@ -164,7 +164,11 @@ document.getElementById("addToCart").addEventListener("click", function () {
 		sinon, on annule l'ajout. */
 		if (cart[productIndexInCart()].quantity <= 100) {
 			localStorage.setItem("Cart", JSON.stringify(cart));
-			alert("La quantité de cet article a bien été mise à jour !");
+			alert(
+				`La quantité de cet article a bien été mise à jour !\nVous en avez maintenant ${
+					cart[productIndexInCart()].quantity
+				} dans votre panier.`
+			);
 		} else {
 			cart[productIndexInCart()].quantity =
 				parseInt(cart[productIndexInCart()].quantity) -
