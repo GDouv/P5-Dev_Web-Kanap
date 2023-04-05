@@ -252,10 +252,10 @@ function validateFormInfos() {
 			}
 
 			if (testLastName) {
-				lastNameErrorMsg.style.display = "none";
 				lastNameInput.value =
 					lastNameInput.value.charAt(0).toUpperCase() +
 					lastNameInput.value.slice(1);
+				lastNameErrorMsg.style.display = "none";
 			} else {
 				lastNameErrorMsg.style.display = "inline";
 			}
