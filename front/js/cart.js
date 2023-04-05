@@ -139,9 +139,6 @@ function displayProductsFromCart(apiProducts) {
 		articlePrice.classList.add("cart__item__price");
 		article.querySelector(".itemQuantity").value = cart[i].quantity;
 
-		// Affichage du nombre total d'articles dans le panier.
-		totalQuantity.innerText = cart.length;
-
 		// Ajout avec "dataset" des datas utiles plus tard pour les produits affichés.
 		articlePrice.dataset.price = articleInfos.price;
 		article.dataset.id = articleId;
